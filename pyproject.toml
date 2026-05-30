@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "neurosymbolic-vqa"
+version = "0.1.0"
+description = "Neurosymbolic Visual Question Answering via Prolog logic over scene graphs"
+requires-python = ">=3.11,<3.13"
+dependencies = [
+    "pydantic>=2.7",
+    "pyswip>=0.3.2",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "pytest-timeout>=2.3",
+    "pytest-mock>=3.14",
+]
+
+[tool.setuptools.packages.find]
+include = ["scene_extractor*", "kb_generator*", "query_executor*", "verbalizer*", "synthetic*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-v --tb=short"
+markers = [
+    "slow: tests that require model downloads or live LLM calls",
+]
