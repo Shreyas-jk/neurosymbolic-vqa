@@ -1,0 +1,10 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+data/clevr_test_subset/
+eval/results/*.json
+.DS_Store
+.env
