@@ -12,6 +12,13 @@ dependencies = [
     "pyswip>=0.3.2",
     "openai>=1.40",
     "ollama>=0.3",
+    # torch >=2.6 required by transformers >=4.51 for `.bin` checkpoint loading
+    # (CVE-2025-32434, https://nvd.nist.gov/vuln/detail/CVE-2025-32434)
+    "torch>=2.6,<2.8",
+    "torchvision>=0.21,<0.23",
+    "transformers>=4.44,<5.0",
+    "Pillow>=10.0",
+    "numpy>=1.26,<2.2",
 ]
 
 [project.optional-dependencies]
