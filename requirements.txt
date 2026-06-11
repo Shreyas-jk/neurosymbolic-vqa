@@ -1,2 +1,4 @@
 pydantic>=2.7
 pyswip>=0.3.2
+openai>=1.40
+ollama>=0.3
