@@ -19,6 +19,7 @@ dependencies = [
     "transformers>=4.44,<5.0",
     "Pillow>=10.0",
     "numpy>=1.26,<2.2",
+    "rich>=13.7",
 ]
 
 [project.optional-dependencies]
@@ -29,7 +30,7 @@ dev = [
 ]
 
 [tool.setuptools.packages.find]
-include = ["scene_extractor*", "kb_generator*", "query_executor*", "verbalizer*", "synthetic*"]
+include = ["scene_extractor*", "kb_generator*", "query_executor*", "verbalizer*", "synthetic*", "nl2prolog*", "evaluation*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

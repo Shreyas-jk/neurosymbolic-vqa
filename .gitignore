@@ -8,6 +8,7 @@ dist/
 .ruff_cache/
 .mypy_cache/
 data/clevr_test_subset/
-eval/results/*.json
+evaluation/results/*.json
+evaluation/results/*.txt
 .DS_Store
 .env

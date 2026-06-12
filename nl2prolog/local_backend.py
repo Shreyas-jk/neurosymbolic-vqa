@@ -1,9 +1,12 @@
 """Ollama backend for the NL→Prolog translator.
 
-Default model is `llama3.2:3b` (small enough to run snappily on an M-series
-Mac; chosen in the plan after benchmarking against qwen and mistral). `format="json"`
-forces structured JSON output, eliminating the markdown-fence problem on the
-happy path.
+Default model is `qwen2.5-coder:7b` — chosen after Phase 4 benchmarking on the
+30-triple golden dataset. The plan's first pick (`llama3.2:3b`) scored 53% /
+30, well below the 83% target; qwen2.5-coder:7b scored 100% / 30 — the plan's
+documented Plan B kicks in. Trade-off: 4.7GB on disk + ~4.5s/query vs 2.0GB +
+~2.7s/query for llama3.2:3b. The accuracy delta is decisive for this task.
+`format="json"` forces structured JSON output, eliminating the markdown-fence
+problem on the happy path.
 """
 
 from __future__ import annotations
@@ -16,7 +19,7 @@ from nl2prolog.translator import TranslatorBackend
 
 @dataclass
 class OllamaBackend(TranslatorBackend):
-    model: str = "llama3.2:3b"
+    model: str = "qwen2.5-coder:7b"
     temperature: float = 0.2
     host: str = ""
     name: str = "ollama"
