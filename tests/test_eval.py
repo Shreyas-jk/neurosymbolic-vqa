@@ -55,14 +55,34 @@ def _json_response(query: str, qtype: str) -> str:
 # ----- Golden dataset sanity ----------------------------------------------
 
 
-def test_golden_dataset_has_thirty_cases() -> None:
-    assert len(GOLDEN_DATASET) == 30
+def test_golden_dataset_has_thirty_two_cases() -> None:
+    # 30 from the plan's 5 buckets (×6) + 2 list-qtype cases added in cleanup.
+    assert len(GOLDEN_DATASET) == 32
 
 
 def test_golden_dataset_bucket_sizes_match_plan() -> None:
-    # Each bucket should be exactly 6 per the plan (existence/count/attribute/spatial/multi_hop × 6).
-    for name, bucket in QTYPE_BUCKETS:
-        assert len(bucket) == 6, f"bucket {name!r} has {len(bucket)} cases (expected 6)"
+    # Plan buckets (existence/count/attribute/spatial/multi_hop) are 6 each.
+    # The list bucket is post-plan and is 2.
+    expected = {
+        "existence": 6,
+        "count": 6,
+        "attribute": 6,
+        "spatial": 6,
+        "multi_hop": 6,
+        "list": 2,
+    }
+    actual = {name: len(bucket) for name, bucket in QTYPE_BUCKETS}
+    assert actual == expected, f"bucket sizes {actual!r} != {expected!r}"
+
+
+def test_golden_dataset_list_cases_have_nonempty_expected() -> None:
+    # The list cases compute expected from the preset at import — if the preset
+    # ever drops the matching objects, this catches it.
+    list_cases = [c for c in GOLDEN_DATASET if c.qtype == "list"]
+    assert len(list_cases) == 2
+    for c in list_cases:
+        assert isinstance(c.expected, list)
+        assert len(c.expected) >= 1, f"{c.case_id} has empty expected list"
 
 
 def test_golden_dataset_qtypes_are_valid() -> None:
@@ -300,3 +320,194 @@ def test_run_eval_failure_stage_counts_populated(tmp_results: Path) -> None:
     ])
     summary, _ = run_eval(backend, [case_ok, case_bad], tmp_results, quiet=True)
     assert summary["failure_stage_counts"].get("correctness", 0) == 1
+
+
+# ----- is_correct list-qtype symmetric normalization ----------------------
+
+
+def test_is_correct_list_matches_object_ids() -> None:
+    # The pipeline returns obj_ids; expected can also be obj_ids and they
+    # normalize symmetrically.
+    case = EvalCase(
+        "X", presets.clevr_like, "?", ["obj_0", "obj_2"], "list"
+    )
+    scene = presets.clevr_like()
+    qr = QueryResult(
+        success=True, answer=["obj_0", "obj_2"], raw_bindings=(),
+        query_string="q", execution_time_ms=0.0, error=None, type="list",
+    )
+    assert is_correct(case, scene, qr)
+
+
+def test_is_correct_list_matches_categories() -> None:
+    # Expected as categories works too (existing semantic).
+    case = EvalCase("X", presets.clevr_like, "?", ["cube", "cylinder"], "list")
+    scene = presets.clevr_like()
+    qr = QueryResult(
+        success=True, answer=["obj_0", "obj_2"], raw_bindings=(),
+        query_string="q", execution_time_ms=0.0, error=None, type="list",
+    )
+    assert is_correct(case, scene, qr)
+
+
+def test_is_correct_list_rejects_wrong_membership() -> None:
+    case = EvalCase("X", presets.clevr_like, "?", ["obj_0"], "list")
+    scene = presets.clevr_like()
+    qr = QueryResult(
+        success=True, answer=["obj_1"], raw_bindings=(),
+        query_string="q", execution_time_ms=0.0, error=None, type="list",
+    )
+    assert not is_correct(case, scene, qr)
+
+
+# ----- CLI exit-code semantics --------------------------------------------
+
+
+def test_compute_exit_code_none_summary_is_zero() -> None:
+    from evaluation.cli import compute_exit_code
+    assert compute_exit_code(None) == 0
+
+
+def test_compute_exit_code_high_accuracy_is_zero() -> None:
+    from evaluation.cli import compute_exit_code
+    assert compute_exit_code({"accuracy": 0.9}) == 0
+
+
+def test_compute_exit_code_at_threshold_is_zero() -> None:
+    from evaluation.cli import compute_exit_code
+    # Boundary: exactly 0.5 should pass (>= threshold).
+    assert compute_exit_code({"accuracy": 0.5}) == 0
+
+
+def test_compute_exit_code_below_threshold_is_one() -> None:
+    from evaluation.cli import compute_exit_code
+    assert compute_exit_code({"accuracy": 0.49}) == 1
+
+
+def test_compute_exit_code_zero_accuracy_is_one() -> None:
+    from evaluation.cli import compute_exit_code
+    assert compute_exit_code({"accuracy": 0.0}) == 1
+
+
+def test_compute_exit_code_custom_threshold() -> None:
+    from evaluation.cli import compute_exit_code
+    # 0.6 falls below a 0.8 threshold → 1.
+    assert compute_exit_code({"accuracy": 0.6}, threshold=0.8) == 1
+
+
+# ----- CLEVR subset loader -------------------------------------------------
+
+
+_CLEVR_SCENES_PATH = Path("data/clevr_test_subset/scenes.json")
+_CLEVR_SUBSET_AVAILABLE = _CLEVR_SCENES_PATH.exists()
+
+
+def _scenes_count() -> int:
+    if not _CLEVR_SUBSET_AVAILABLE:
+        return 0
+    with _CLEVR_SCENES_PATH.open() as f:
+        payload = json.load(f)
+    return len(payload["scenes"])
+
+
+@pytest.mark.skipif(
+    not _CLEVR_SUBSET_AVAILABLE,
+    reason="CLEVR subset not extracted (run scripts/download_clevr.sh)",
+)
+def test_clevr_iter_cases_count_matches_formula() -> None:
+    # 5 cases per scene: total_count + 2 attribute-counts + 1 positive existence
+    # + 1 negative existence. (Counts may be 4 instead of 5 if a scene has no
+    # color or no material — but CLEVR scenes always have both, so 5/scene holds.)
+    from evaluation.clevr_subset import iter_cases
+    cases = iter_cases()
+    expected = _scenes_count() * 5
+    assert len(cases) == expected, (
+        f"expected {expected} cases ({_scenes_count()} scenes × 5), got {len(cases)}"
+    )
+
+
+@pytest.mark.skipif(
+    not _CLEVR_SUBSET_AVAILABLE,
+    reason="CLEVR subset not extracted (run scripts/download_clevr.sh)",
+)
+def test_clevr_iter_cases_image_paths_exist_on_disk() -> None:
+    from evaluation.clevr_subset import iter_cases
+    cases = iter_cases()
+    assert cases, "expected at least one case"
+    for c in cases:
+        assert Path(c.image_path).exists(), f"image missing: {c.image_path}"
+        assert Path(c.image_path).is_file()
+
+
+@pytest.mark.skipif(
+    not _CLEVR_SUBSET_AVAILABLE,
+    reason="CLEVR subset not extracted (run scripts/download_clevr.sh)",
+)
+def test_clevr_existence_cases_match_scene_ground_truth() -> None:
+    """Re-verify positive/negative existence expecteds against scenes.json."""
+    from evaluation.clevr_subset import iter_cases
+
+    with _CLEVR_SCENES_PATH.open() as f:
+        scenes = json.load(f)["scenes"]
+    scene_pairs_by_index = {
+        i: {(obj.get("color"), obj.get("shape")) for obj in s["objects"]}
+        for i, s in enumerate(scenes)
+    }
+
+    cases = iter_cases()
+    checked_positive = checked_negative = 0
+    for c in cases:
+        if c.qtype != "boolean":
+            continue
+        # Case IDs look like CLEVR_{idx}_exists_{color}_{shape} or _not_exists_.
+        parts = c.case_id.split("_")
+        scene_idx = int(parts[1])
+        scene_pairs = scene_pairs_by_index[scene_idx]
+        if "not_exists" in c.case_id:
+            color = parts[3]
+            shape = parts[4]
+            assert (color, shape) not in scene_pairs, (
+                f"{c.case_id} marked False but ({color},{shape}) IS in scene"
+            )
+            assert c.expected is False
+            checked_negative += 1
+        elif "exists" in c.case_id:
+            color = parts[3]
+            shape = parts[4]
+            assert (color, shape) in scene_pairs, (
+                f"{c.case_id} marked True but ({color},{shape}) is NOT in scene"
+            )
+            assert c.expected is True
+            checked_positive += 1
+    # Sanity: we should have walked through both kinds of cases.
+    assert checked_positive > 0
+    assert checked_negative > 0
+
+
+@pytest.mark.skipif(
+    not _CLEVR_SUBSET_AVAILABLE,
+    reason="CLEVR subset not extracted (run scripts/download_clevr.sh)",
+)
+def test_clevr_count_total_matches_scene_object_count() -> None:
+    from evaluation.clevr_subset import iter_cases
+
+    with _CLEVR_SCENES_PATH.open() as f:
+        scenes = json.load(f)["scenes"]
+    n_objects_by_index = {i: len(s["objects"]) for i, s in enumerate(scenes)}
+
+    for c in iter_cases():
+        if c.case_id.endswith("_count_total"):
+            scene_idx = int(c.case_id.split("_")[1])
+            assert c.expected == n_objects_by_index[scene_idx]
+
+
+def test_clevr_iter_cases_returns_empty_when_no_data(tmp_path: Path, monkeypatch) -> None:
+    """Without scenes.json + images, iter_cases must return [] (not raise)."""
+    import evaluation.clevr_subset as cs
+    monkeypatch.setattr(cs, "DATA_DIR", tmp_path / "missing")
+    monkeypatch.setattr(cs, "SCENES_FILE", tmp_path / "missing" / "scenes.json")
+    monkeypatch.setattr(cs, "IMAGES_DIR", tmp_path / "missing" / "images")
+    assert cs.iter_cases() == []
+    cases, status = cs.ensure_clevr_subset()
+    assert cases == []
+    assert status["scenes_file_present"] is False
