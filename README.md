@@ -199,12 +199,20 @@ prompt engineering.
 git clone https://github.com/Shreyas-jk/neurosymbolic-vqa.git
 cd neurosymbolic-vqa
 python3.11 -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
+
+# Local development with the full vision pipeline (OWL-ViT + CLIP):
+pip install -r requirements-full.txt
+# OR — minimal install for the demo only (no vision, no real-image mode):
+# pip install -r requirements.txt
+
 ollama pull qwen2.5-coder:7b           # or set NL2PROLOG_BACKEND=openai
 .venv/bin/python -m pytest -m "not slow" -q
 ```
 
-Should report `132 passed, 11 deselected in ~3s`.
+The root `requirements.txt` is the minimal Spaces-compatible set (no
+torch / transformers); `requirements-full.txt` adds the local vision stack
+(OWL-ViT + CLIP). The slow vision tests need `requirements-full.txt`; the
+non-slow suite runs against either.
 
 To run the eval suites:
 
