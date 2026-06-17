@@ -450,7 +450,7 @@ def main() -> None:
     # 127.0.0.1 by default for local use; export NSVQA_DEMO_HOST=0.0.0.0 to
     # bind on all interfaces (HF Spaces sets its own bindings).
     host = os.environ.get("NSVQA_DEMO_HOST", "127.0.0.1")
-    app.launch(server_name=host, server_port=7860, share=False)
+    app.launch(server_name=host, server_port=7860, share=True, show_api=False)
 
 
 if __name__ == "__main__":
