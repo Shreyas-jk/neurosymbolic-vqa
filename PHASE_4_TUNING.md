@@ -128,4 +128,118 @@ prompts: 9/9 pass in 6.4s. Non-slow suite untouched (132/132).
   add a separate `IMAGE_QTYPE_BUCKETS` constant or fall through to `qtype`
   directly when no synthetic bucket matches.
 
+---
+
+# Phase 4.2 — OWL-ViT detection tuning (sweep)
+
+**Outcome: vision tuning grid exhausted at 56% — moving to Phase 5 with this number.**
+
+No config strictly exceeded the 56% baseline (Config B tied it, but failed the
+synthetic gate). Per the task brief's abort condition, no detection-tuning
+commit was made; the working tree was left untouched. The baseline
+`evaluation/results/clevr_baseline_v2_after_clip_tuning.json` is committed
+(`5c4da1f`) as the stable Phase 4.1 anchor.
+
+## Grid
+
+All three configs were run in one process so OWL-ViT + CLIP stayed cached
+(`scene_extractor.models.get_detector` / `get_clip` use `lru_cache`). Per-config
+result JSONs are in `evaluation/results/clevr_config_{A,B,C}.json` (gitignored);
+synthetic gate runs in `evaluation/results/synthetic_after_config_{A,B,C}.json`.
+
+| Config | thresh | NMS IoU | CLEVR | Synthetic | vision ms/img | clevr wall |
+|---|---:|---:|---|---|---:|---:|
+| **baseline v2** | 0.10 | 0.50 | **28/50 (56.0%)** | 32/32 (100%) | 1102 | — |
+| A | 0.05 | 0.50 | 21/50 (42.0%) | 32/32 (100%) | 1314 | 228.5s |
+| B | 0.10 | 0.30 | 28/50 (56.0%) | **31/32 (96.9%)** | **983** | 200.0s |
+| C | 0.05 | 0.30 | 27/50 (54.0%) | 31/32 (96.9%) | 1417 | 234.3s |
+
+Wall clocks include the ~3.5–4.5 s/case LLM translation; vision is a small slice.
+
+## Per-config count vs boolean + top-5 failure categories
+
+### Baseline v2 — 28/50
+- count: 15/30 (50%)  |  boolean: 13/20 (65%)
+- top failures: 6× count_material(metal), 4× count_material(rubber), 3× exists_blue_cube, 2× count_total, 2× exists_brown_cube
+
+### Config A (thresh 0.05, NMS 0.5) — 21/50, −7 vs baseline
+- count: 5/30 (17%)  |  boolean: 16/20 (80%)
+- top failures: **10× count_total**, 5× count_material(metal), 3× count_material(rubber), 3× exists_blue_cube, 2× count_color(gray)
+- Verdict: lower threshold floods the scene with spurious boxes. Boolean
+  questions get easier (more boxes → more positive matches) but every count
+  question collapses (count_total wrong on 10 of 10 scenes). Net loss.
+
+### Config B (thresh 0.10, NMS 0.3) — 28/50, identical accuracy to baseline
+- count: 15/30 (50%)  |  boolean: 13/20 (65%)
+- top failures: identical to baseline
+- vision latency: **983 ms/img**, fastest in the grid
+- Synthetic gate: **31/32 (96.9%)** — M4 ("What material is the small object?")
+  was tagged `count` instead of `attribute` by qwen2.5-coder:7b. This is LLM
+  flake (qwen is mildly nondeterministic on borderline qtype tags at temp 0.2),
+  not a vision regression — synthetic eval never touches the extractor at all.
+  Same failure repeats on Config C with the same case, supporting the
+  flake-not-determinism hypothesis.
+- Verdict: tightening NMS alone with this prompt set didn't recover any case
+  the looser NMS missed. The duplicate-detection hypothesis was wrong.
+
+### Config C (thresh 0.05, NMS 0.3) — 27/50, −1 vs baseline
+- count: 11/30 (37%)  |  boolean: 16/20 (80%)
+- top failures: **9× count_total**, 3× count_material(rubber), 3× count_material(metal), 3× exists_blue_cube
+- vision latency: 1417 ms/img, slowest in the grid
+- Verdict: the lower threshold hurts the same way as in A. Tighter NMS doesn't
+  rescue it.
+
+## Why none of the configs won
+
+The user's hypothesis was that NMS@0.5 was over-counting and threshold@0.1 was
+under-detecting metal. The data only weakly supports the second half — Config A
+and C both add detections (boolean accuracy went from 65% → 80% in both) but
+those detections are mostly spurious for COUNT questions. Lowering threshold
+trades count accuracy for boolean accuracy, but CLEVR's count questions
+outnumber boolean 30:20 in the test set, so the trade-off comes out negative.
+
+Tightening NMS to 0.3 (B) didn't change a single case relative to baseline.
+This means baseline NMS@0.5 wasn't actually duplicating boxes — OWL-ViT was
+already producing well-separated detections at the original threshold. The
+"NMS over-counting" hypothesis from PHASE_4_TUNING was wrong.
+
+The remaining error mass is detector RECALL on metal spheres (the same as
+after Phase 4.1) — that recall doesn't change with score threshold or NMS IoU.
+It's a model-prior problem: OWL-ViT trained on natural photos doesn't activate
+strongly on CLEVR-rendered chrome spheres regardless of the score floor.
+
+## What I did NOT try (deferred to Phase 5)
+
+The user's task brief flagged prompt expansion as a "Note: also consider"
+option. I did NOT include it in the grid because the three threshold configs
+were specified as the primary experiment and prompt expansion would have
+muddied the threshold signal. Two prompt-engineering ideas worth Phase 5
+attention:
+
+1. **Detection prompt rephrasing** at `extractor.py:116` — change `"a photo
+   of a {c}"` to a CLEVR-domain template like `"a 3D rendered {c}"` or
+   `"a Blender render of a {c}"`, mirroring what the CLIP attribute classifier
+   does. This is one line of code; high upside if it shifts the OWL-ViT
+   text-encoder prior into render space.
+2. **Vocabulary expansion** — add "small geometric shape", "rendered metallic
+   sphere", "shiny chrome sphere" alongside the canonical vocab, with a
+   post-process step mapping the expanded query labels back to the canonical
+   category before constructing `SceneObject`. The extractor currently uses
+   `self.object_vocab[label_idx]` directly which assumes 1:1 query→category.
+
+## Files touched in this phase
+
+- `evaluation/results/clevr_baseline_v2_after_clip_tuning.json` — committed
+  separately (`5c4da1f`) as the Phase 4.1 anchor before the sweep started.
+- `evaluation/results/clevr_baseline_v1.json` — also caught up in the baseline
+  commit (was an orphan from Phase 4.1).
+- `.gitignore` — exception `!evaluation/results/*baseline*.json` so future
+  baselines don't need `-f`.
+- `evaluation/results/clevr_config_{A,B,C}.json`,
+  `evaluation/results/synthetic_after_config_{A,B,C}.json` — written by the
+  sweep, gitignored (regeneratable from /tmp/tune_owlvit.py).
+- **No production code changed.** `scene_extractor/extractor.py`,
+  `scene_extractor/config.py`, `scene_extractor/attribute_classifier.py` are
+  untouched at this phase's exit.
+
 STOP. Phase 5 not started.
