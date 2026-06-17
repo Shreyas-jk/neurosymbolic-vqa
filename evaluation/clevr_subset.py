@@ -1,160 +1,253 @@
-"""CLEVR sample-image downloader for the image-mode eval.
+"""CLEVR subset loader for the image-mode eval.
 
-We don't ship the 18GB CLEVR_v1.0 archive. Instead, we cherry-pick a small
-fixed subset (5–10 images) of CLEVR validation scenes plus their ground-truth
-metadata. Images are fetched on demand into `data/clevr_test_subset/`
-(gitignored) — first call hits the network, subsequent calls hit disk.
+Reads ground-truth scenes from `data/clevr_test_subset/scenes.json` (a 10-scene
+slice of CLEVR_v1.0 val) and the matching PNGs from
+`data/clevr_test_subset/images/`. Per scene we template a fixed shape of
+ImageEvalCase entries from the ground truth:
 
-If the network is unreachable AND the cache is empty, `iter_cases()` returns
-an empty list (the caller decides what to do). The eval harness logs the skip
-in this case rather than failing — we still want synthetic-eval numbers.
+    1× total count            "How many objects are there?"
+    1× count by most-common color    "How many {color} objects are there?"
+    1× count by most-common material "How many {material} objects are there?"
+    1× positive existence     "Is there a {color} {shape}?"      (combo present)
+    1× negative existence     "Is there a {color} {shape}?"      (combo absent)
 
-The subset's ground-truth questions are encoded directly here so we don't
-depend on the CLEVR questions JSON (which is also large). Each question is
-hand-crafted to be answerable from the scene description and the schema our
-KB exposes.
+→ 5 cases per scene × 10 scenes = 50 cases.
+
+The 18GB CLEVR_v1.0 archive is NOT auto-downloaded — see
+scripts/download_clevr.sh for the selective-unzip recipe. On any error
+(missing files, malformed JSON, empty scenes), `iter_cases()` returns `[]`
+and the harness reports the empty list gracefully.
+
+CLEVR vocabularies, used verbatim when templating questions even though the
+local CLIP attribute classifier may disagree:
+    colors    gray, red, blue, green, brown, purple, cyan, yellow
+    shapes    cube, sphere, cylinder
+    sizes     small, large
+    materials rubber, metal
 """
 
 from __future__ import annotations
 
 import json
-import urllib.error
-import urllib.request
+from collections import Counter
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Iterable, Tuple
+from typing import Any, Tuple
 
 from evaluation.harness import ImageEvalCase
 
-# Repo root → data dir. Computed once at import.
 _REPO_ROOT = Path(__file__).resolve().parents[1]
 DATA_DIR: Path = _REPO_ROOT / "data" / "clevr_test_subset"
+SCENES_FILE: Path = DATA_DIR / "scenes.json"
+IMAGES_DIR: Path = DATA_DIR / "images"
 
-# Mirrors of CLEVR validation images. We try several mirrors in order so a
-# single host outage doesn't kill the eval. Each URL must point at a single
-# image we can stream into the cache.
-#
-# These are intentionally a tiny hand-picked set (5 images). Each has a
-# question that doesn't depend on detection of the exact CLEVR rendering
-# distribution — color and count questions tend to survive OWL-ViT's
-# domain shift better than category questions on rendered 3D shapes.
-_MIRRORS: Tuple[str, ...] = (
-    "https://huggingface.co/datasets/jxie/clevr/resolve/main",
-    "https://huggingface.co/datasets/Multimodal-Fatima/CLEVR_train/resolve/main",
+CLEVR_COLORS: Tuple[str, ...] = (
+    "gray", "red", "blue", "green", "brown", "purple", "cyan", "yellow",
 )
-
-_SUBSET: Tuple[Tuple[str, str, str, Any, str, str], ...] = (
-    # (case_id, filename, question, expected, qtype, notes)
-    (
-        "CL1", "CLEVR_val_000000.png",
-        "Are there any objects in the image?", True, "boolean",
-        "Sanity check — any non-empty scene must satisfy this.",
-    ),
-    (
-        "CL2", "CLEVR_val_000001.png",
-        "How many objects are there?", None, "count",
-        "Total object count — expected populated from scene gt if available.",
-    ),
-    (
-        "CL3", "CLEVR_val_000002.png",
-        "Is there a red object?", None, "boolean",
-        "Color existence — expected populated from scene gt if available.",
-    ),
-    (
-        "CL4", "CLEVR_val_000003.png",
-        "How many spheres are there?", None, "count",
-        "Category-filtered count.",
-    ),
-    (
-        "CL5", "CLEVR_val_000004.png",
-        "Is there a metal object?", None, "boolean",
-        "Material existence.",
-    ),
-)
+CLEVR_SHAPES: Tuple[str, ...] = ("cube", "sphere", "cylinder")
+CLEVR_SIZES: Tuple[str, ...] = ("small", "large")
+CLEVR_MATERIALS: Tuple[str, ...] = ("rubber", "metal")
 
 
 @dataclass(frozen=True)
-class FetchResult:
-    available: list[Path]
-    skipped: list[Tuple[str, str]]  # (filename, error reason)
+class LoadStatus:
+    """What `iter_cases` saw on disk. The CLI prints this when no cases load."""
+    scenes_file_present: bool
+    images_dir_present: bool
+    scene_count: int
+    case_count: int
+    error: str | None = None
 
 
-def _try_fetch(filename: str, dest: Path, *, timeout: float = 10.0) -> Tuple[bool, str]:
-    for mirror in _MIRRORS:
-        url = f"{mirror}/{filename}"
-        try:
-            req = urllib.request.Request(url, headers={"User-Agent": "neurosymbolic-vqa-eval/0.1"})
-            with urllib.request.urlopen(req, timeout=timeout) as resp:
-                data = resp.read()
-            dest.write_bytes(data)
-            return True, ""
-        except (urllib.error.URLError, urllib.error.HTTPError, OSError, TimeoutError) as exc:
-            continue
-    return False, "all mirrors failed"
+def _load_scenes() -> list[dict[str, Any]]:
+    """Parse scenes.json. Returns the list under `scenes`, or empty on error."""
+    if not SCENES_FILE.exists():
+        return []
+    try:
+        with SCENES_FILE.open("r", encoding="utf-8") as f:
+            payload = json.load(f)
+    except (json.JSONDecodeError, OSError):
+        return []
+    if isinstance(payload, dict) and "scenes" in payload:
+        scenes = payload["scenes"]
+    elif isinstance(payload, list):
+        scenes = payload
+    else:
+        return []
+    return [s for s in scenes if isinstance(s, dict) and "objects" in s]
 
 
-def fetch(*, force: bool = False) -> FetchResult:
-    """Download any missing CLEVR sample images. Idempotent."""
-    DATA_DIR.mkdir(parents=True, exist_ok=True)
-    available: list[Path] = []
-    skipped: list[Tuple[str, str]] = []
-    for case_id, filename, *_ in _SUBSET:
-        dest = DATA_DIR / filename
-        if dest.exists() and not force:
-            available.append(dest)
-            continue
-        ok, reason = _try_fetch(filename, dest)
-        if ok:
-            available.append(dest)
-        else:
-            skipped.append((filename, reason))
-    return FetchResult(available=available, skipped=skipped)
+def _image_path_for(scene: dict[str, Any]) -> Path | None:
+    """Resolve the PNG for `scene` under IMAGES_DIR. None if not on disk."""
+    filename = scene.get("image_filename")
+    if not filename:
+        idx = scene.get("image_index")
+        if idx is None:
+            return None
+        filename = f"CLEVR_val_{int(idx):06d}.png"
+    candidate = IMAGES_DIR / filename
+    return candidate if candidate.exists() else None
 
 
-def iter_cases() -> list[ImageEvalCase]:
-    """Return ImageEvalCase objects for every cached CLEVR image.
+def _most_common(items: list[str]) -> str | None:
+    if not items:
+        return None
+    counter = Counter(items)
+    # most_common preserves first-seen on ties; sorting the keys first gives a
+    # deterministic tie-break.
+    sorted_keys = sorted(counter.keys())
+    return max(sorted_keys, key=lambda k: counter[k])
 
-    Skips entries whose image isn't on disk yet (call `fetch()` first if you
-    want the missing ones). Questions with `expected = None` are dropped — we
-    don't have the CLEVR scene ground truth checked in, so we only run
-    questions whose expected answer is known a priori (the boolean sanity
-    check).
+
+def _missing_combo(scene_objects: list[dict[str, Any]]) -> tuple[str, str]:
+    """Return a (color, shape) pair NOT present in the scene.
+
+    Prefers a color absent from the scene paired with the alphabetically-first
+    CLEVR shape (deterministic). If every CLEVR color appears, falls back to
+    the first absent (color, shape) combination.
     """
+    present_colors = {obj.get("color") for obj in scene_objects}
+    present_pairs = {(obj.get("color"), obj.get("shape")) for obj in scene_objects}
+    sorted_shape = sorted(CLEVR_SHAPES)[0]
+    for color in CLEVR_COLORS:
+        if color not in present_colors:
+            return color, sorted_shape
+    for color in CLEVR_COLORS:
+        for shape in CLEVR_SHAPES:
+            if (color, shape) not in present_pairs:
+                return color, shape
+    # Pathological: every CLEVR combo is present (impossible with <24 objects).
+    return CLEVR_COLORS[0], CLEVR_SHAPES[0]
+
+
+def _cases_for_scene(scene_index: int, scene: dict[str, Any], image_path: Path) -> list[ImageEvalCase]:
+    """Produce 1 total-count + 2 attribute-counts + 1 positive + 1 negative existence."""
+    objects = scene["objects"]
+    if not objects:
+        return []
+
     cases: list[ImageEvalCase] = []
-    for case_id, filename, question, expected, qtype, notes in _SUBSET:
-        path = DATA_DIR / filename
-        if not path.exists():
-            continue
-        if expected is None:
-            # Without checked-in CLEVR ground truth (scenes.json), we can't
-            # score this case automatically — surface as a vision-only run.
-            continue
+    img_str = str(image_path)
+
+    cases.append(
+        ImageEvalCase(
+            case_id=f"CLEVR_{scene_index}_count_total",
+            image_path=img_str,
+            question="How many objects are there?",
+            expected=len(objects),
+            qtype="count",
+            ground_truth_objects=objects,
+            notes="Total object count from CLEVR ground truth.",
+        )
+    )
+
+    colors_in_scene = [obj["color"] for obj in objects if "color" in obj]
+    top_color = _most_common(colors_in_scene)
+    if top_color is not None:
         cases.append(
             ImageEvalCase(
-                case_id=case_id,
-                image_path=str(path),
-                question=question,
-                expected=expected,
-                qtype=qtype,
-                notes=notes,
+                case_id=f"CLEVR_{scene_index}_count_{top_color}",
+                image_path=img_str,
+                question=f"How many {top_color} objects are there?",
+                expected=colors_in_scene.count(top_color),
+                qtype="count",
+                ground_truth_objects=objects,
+                notes=f"Count by most-common color ({top_color}) in the scene.",
             )
         )
+
+    materials_in_scene = [obj["material"] for obj in objects if "material" in obj]
+    top_material = _most_common(materials_in_scene)
+    if top_material is not None:
+        cases.append(
+            ImageEvalCase(
+                case_id=f"CLEVR_{scene_index}_count_{top_material}",
+                image_path=img_str,
+                question=f"How many {top_material} objects are there?",
+                expected=materials_in_scene.count(top_material),
+                qtype="count",
+                ground_truth_objects=objects,
+                notes=f"Count by most-common material ({top_material}) in the scene.",
+            )
+        )
+
+    pairs = Counter(
+        (obj.get("color"), obj.get("shape"))
+        for obj in objects
+        if obj.get("color") and obj.get("shape")
+    )
+    if pairs:
+        sorted_pairs = sorted(pairs.keys())
+        pos_color, pos_shape = max(sorted_pairs, key=lambda p: pairs[p])
+        cases.append(
+            ImageEvalCase(
+                case_id=f"CLEVR_{scene_index}_exists_{pos_color}_{pos_shape}",
+                image_path=img_str,
+                question=f"Is there a {pos_color} {pos_shape}?",
+                expected=True,
+                qtype="boolean",
+                ground_truth_objects=objects,
+                notes=f"Most-common color+shape combo present: {pos_color} {pos_shape}.",
+            )
+        )
+
+    neg_color, neg_shape = _missing_combo(objects)
+    cases.append(
+        ImageEvalCase(
+            case_id=f"CLEVR_{scene_index}_not_exists_{neg_color}_{neg_shape}",
+            image_path=img_str,
+            question=f"Is there a {neg_color} {neg_shape}?",
+            expected=False,
+            qtype="boolean",
+            ground_truth_objects=objects,
+            notes=f"Absent combo from CLEVR vocabulary: {neg_color} {neg_shape}.",
+        )
+    )
+
     return cases
 
 
-def ensure_clevr_subset(*, fetch_if_missing: bool = True) -> Tuple[list[ImageEvalCase], dict[str, Any]]:
-    """Best-effort: fetch + iterate. Returns (cases, status dict).
+def iter_cases() -> list[ImageEvalCase]:
+    """Build the full ImageEvalCase list from disk.
 
-    `status` describes what succeeded/failed so the caller can log it.
+    Returns `[]` on any I/O or parsing error rather than raising — the harness
+    is responsible for handling the empty case (e.g., "no CLEVR data found,
+    skipping suite"). This matches the existing iter_cases contract used by
+    the CLI.
     """
-    status: dict[str, Any] = {"attempted_fetch": False, "fetch": None}
-    if fetch_if_missing:
-        status["attempted_fetch"] = True
-        fr = fetch()
-        status["fetch"] = {
-            "available": [p.name for p in fr.available],
-            "skipped": fr.skipped,
+    scenes = _load_scenes()
+    if not scenes:
+        return []
+    cases: list[ImageEvalCase] = []
+    for idx, scene in enumerate(scenes):
+        img_path = _image_path_for(scene)
+        if img_path is None:
+            continue
+        cases.extend(_cases_for_scene(idx, scene, img_path))
+    return cases
+
+
+def ensure_clevr_subset() -> tuple[list[ImageEvalCase], dict[str, Any]]:
+    """Returns (cases, status_dict). Backwards-compatible with the CLI."""
+    scenes = _load_scenes()
+    status = LoadStatus(
+        scenes_file_present=SCENES_FILE.exists(),
+        images_dir_present=IMAGES_DIR.exists(),
+        scene_count=len(scenes),
+        case_count=0,
+    )
+    if not scenes:
+        return [], {
+            "scenes_file_present": status.scenes_file_present,
+            "images_dir_present": status.images_dir_present,
+            "scene_count": 0,
+            "case_count": 0,
+            "hint": "Run scripts/download_clevr.sh for the extraction recipe.",
         }
     cases = iter_cases()
-    status["case_count"] = len(cases)
-    return cases, status
+    return cases, {
+        "scenes_file_present": status.scenes_file_present,
+        "images_dir_present": status.images_dir_present,
+        "scene_count": len(scenes),
+        "case_count": len(cases),
+    }

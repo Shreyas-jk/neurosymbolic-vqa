@@ -124,11 +124,20 @@ def is_correct(case: EvalCase, scene: SceneGraph, qresult: QueryResult) -> bool:
     if qt == "list":
         if not isinstance(answer, list):
             return False
-        predicted_cats = sorted(
-            c for c in (_category_of(scene, a) for a in answer) if c is not None
-        )
-        expected_cats = sorted(str(e).strip().lower() for e in expected)
-        return [c.strip().lower() for c in predicted_cats] == expected_cats
+
+        # Symmetric normalization — accept either obj_id ("obj_0") or category
+        # ("cube") on EITHER side. Pipelines return obj_ids; golden datasets
+        # may carry either. Without this, "expected=['obj_0']" never matches
+        # "answer=['obj_0']" because answer would be resolved to category but
+        # expected would not.
+        def _norm(x: Any) -> str:
+            s = str(x).strip().lower()
+            cat = _category_of(scene, s)
+            return cat.strip().lower() if cat else s
+
+        predicted = sorted(_norm(a) for a in answer)
+        expected_norm = sorted(_norm(e) for e in expected)
+        return predicted == expected_norm
 
     return False
 
@@ -403,7 +412,7 @@ def _print_table(summary: dict[str, Any]) -> None:
     bucket_table.add_column("Correct")
     bucket_table.add_column("Total")
     bucket_table.add_column("Accuracy")
-    for k in ("existence", "count", "attribute", "spatial", "multi_hop"):
+    for k in ("existence", "count", "attribute", "spatial", "multi_hop", "list"):
         bucket = summary["by_qtype"].get(k, {"correct": 0, "n": 0, "accuracy": 0.0})
         bucket_table.add_row(
             k,

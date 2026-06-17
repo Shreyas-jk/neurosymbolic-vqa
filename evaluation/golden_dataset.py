@@ -1,9 +1,11 @@
-"""30-triple synthetic golden dataset for the eval harness.
+"""32-triple synthetic golden dataset for the eval harness.
 
-Spread: 6 each of existence / count / attribute / spatial / multi-hop.
+Spread: 6 each of existence / count / attribute / spatial / multi-hop, plus
+2 list-qtype cases (the `list` bucket isn't part of the plan's original 30
+but exercises the comparator's list-collection path end-to-end).
 
 Each `EvalCase` carries:
-    case_id       — stable identifier (e.g. "E1", "C3", "S5", "M2")
+    case_id       — stable identifier (e.g. "E1", "C3", "S5", "M2", "L1")
     scene_factory — () -> SceneGraph; builds the scene fresh per run
     question      — natural language question
     expected      — ground-truth answer (bool / int / str / list[str])
@@ -184,11 +186,41 @@ _MULTIHOP: Tuple[EvalCase, ...] = (
     ),
 )
 
-GOLDEN_DATASET: Tuple[EvalCase, ...] = (
-    _EXISTENCE + _COUNT + _ATTRIBUTE + _SPATIAL + _MULTIHOP
+# ---- List (2) — collection queries against the symbolic KB ---------------
+#
+# Expected values are computed from the preset's SceneGraph at module import,
+# not hardcoded — if the preset definition changes, this dataset stays correct.
+# `is_correct` for qtype="list" normalizes obj_ids → categories symmetrically
+# so either expected form (IDs or categories) matches a pipeline answer.
+
+def _ids_matching(scene_factory: Callable[[], SceneGraph], **filters: str) -> list[str]:
+    scene = scene_factory()
+    return sorted(
+        obj.id
+        for obj in scene.objects
+        if all(obj.attributes.get(k) == v for k, v in filters.items())
+    )
+
+
+_LIST: Tuple[EvalCase, ...] = (
+    EvalCase(
+        "L1", presets.clevr_like, "List all red objects.",
+        _ids_matching(presets.clevr_like, color="red"), "list",
+        "Findall over the color=red filter; only the cube qualifies in clevr_like."
+    ),
+    EvalCase(
+        "L2", presets.clevr_like, "List all metal objects.",
+        _ids_matching(presets.clevr_like, material="metal"), "list",
+        "Findall over material=metal — cube and cylinder both qualify."
+    ),
 )
 
-assert len(GOLDEN_DATASET) == 30, f"expected 30 golden triples, got {len(GOLDEN_DATASET)}"
+
+GOLDEN_DATASET: Tuple[EvalCase, ...] = (
+    _EXISTENCE + _COUNT + _ATTRIBUTE + _SPATIAL + _MULTIHOP + _LIST
+)
+
+assert len(GOLDEN_DATASET) == 32, f"expected 32 golden triples, got {len(GOLDEN_DATASET)}"
 
 QTYPE_BUCKETS: Tuple[Tuple[str, Tuple[EvalCase, ...]], ...] = (
     ("existence", _EXISTENCE),
@@ -196,4 +228,5 @@ QTYPE_BUCKETS: Tuple[Tuple[str, Tuple[EvalCase, ...]], ...] = (
     ("attribute", _ATTRIBUTE),
     ("spatial", _SPATIAL),
     ("multi_hop", _MULTIHOP),
+    ("list", _LIST),
 )
