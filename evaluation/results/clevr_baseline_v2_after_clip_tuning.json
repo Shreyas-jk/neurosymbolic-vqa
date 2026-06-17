@@ -1,0 +1,1226 @@
+{
+  "cases": [
+    {
+      "case_id": "CLEVR_0_count_total",
+      "correct": false,
+      "error": null,
+      "expected": 5,
+      "extras": {
+        "attempts": 1,
+        "parsed_type": "count",
+        "query": "findall(X, object(X, _), L), length(L, N)",
+        "verbalized": "There are 7 objects.",
+        "vision_latency_ms": 6142.167916987091
+      },
+      "failure_stage": "correctness",
+      "latency_ms_by_stage": {
+        "execution": 16.20583375915885,
+        "kb_generation": 0.19575003534555435,
+        "kb_validation": 52.003500051796436,
+        "translation": 15232.73320775479,
+        "verbalization": 0.03420934081077576
+      },
+      "predicted": 7,
+      "qtype": "count",
+      "question": "How many objects are there?"
+    },
+    {
+      "case_id": "CLEVR_0_count_gray",
+      "correct": false,
+      "error": null,
+      "expected": 2,
+      "extras": {
+        "attempts": 1,
+        "parsed_type": "count",
+        "query": "findall(X, (object(X, _), attribute(X, color, gray)), L), length(L, N)",
+        "verbalized": "There is 1 gray object.",
+        "vision_latency_ms": 1067.7046673372388
+      },
+      "failure_stage": "correctness",
+      "latency_ms_by_stage": {
+        "execution": 2.2693336941301823,
+        "kb_generation": 0.1828339882194996,
+        "kb_validation": 73.20337509736419,
+        "translation": 2835.357875097543,
+        "verbalization": 0.036084093153476715
+      },
+      "predicted": 1,
+      "qtype": "count",
+      "question": "How many gray objects are there?"
+    },
+    {
+      "case_id": "CLEVR_0_count_rubber",
+      "correct": false,
+      "error": null,
+      "expected": 3,
+      "extras": {
+        "attempts": 1,
+        "parsed_type": "count",
+        "query": "findall(X, (object(X, _), attribute(X, material, rubber)), L), length(L, N)",
+        "verbalized": "There are 4 rubber objects.",
+        "vision_latency_ms": 1056.3338343054056
+      },
+      "failure_stage": "correctness",
+      "latency_ms_by_stage": {
+        "execution": 2.4605831131339073,
+        "kb_generation": 0.19916705787181854,
+        "kb_validation": 90.35470802336931,
+        "translation": 2807.80674982816,
+        "verbalization": 0.0338749960064888
+      },
+      "predicted": 4,
+      "qtype": "count",
+      "question": "How many rubber objects are there?"
+    },
+    {
+      "case_id": "CLEVR_0_exists_gray_cube",
+      "correct": true,
+      "error": null,
+      "expected": true,
+      "extras": {
+        "attempts": 1,
+        "parsed_type": "boolean",
+        "query": "object(X, cube), attribute(X, color, gray)",
+        "verbalized": "Yes \u2014 small gray rubber cube.",
+        "vision_latency_ms": 965.9477500244975
+      },
+      "failure_stage": null,
+      "latency_ms_by_stage": {
+        "execution": 1.5463330782949924,
+        "kb_generation": 0.1338752917945385,
+        "kb_validation": 93.42479100450873,
+        "translation": 1564.9457089602947,
+        "verbalization": 0.04404224455356598
+      },
+      "predicted": true,
+      "qtype": "boolean",
+      "question": "Is there a gray cube?"
+    },
+    {
+      "case_id": "CLEVR_0_not_exists_red_cube",
+      "correct": true,
+      "error": null,
+      "expected": false,
+      "extras": {
+        "attempts": 1,
+        "parsed_type": "boolean",
+        "query": "object(X, cube), attribute(X, color, red)",
+        "verbalized": "No.",
+        "vision_latency_ms": 824.470791965723
+      },
+      "failure_stage": null,
+      "latency_ms_by_stage": {
+        "execution": 2.0838328637182713,
+        "kb_generation": 0.16533397138118744,
+        "kb_validation": 74.91879211738706,
+        "translation": 1578.6172919906676,
+        "verbalization": 0.027499627321958542
+      },
+      "predicted": false,
+      "qtype": "boolean",
+      "question": "Is there a red cube?"
+    },
+    {
+      "case_id": "CLEVR_1_count_total",
+      "correct": true,
+      "error": null,
+      "expected": 10,
+      "extras": {
+        "attempts": 1,
+        "parsed_type": "count",
+        "query": "findall(X, object(X, _), L), length(L, N)",
+        "verbalized": "There are 10 objects.",
+        "vision_latency_ms": 1022.9433751665056
+      },
+      "failure_stage": null,
+      "latency_ms_by_stage": {
+        "execution": 2.4635419249534607,
+        "kb_generation": 0.1887497492134571,
+        "kb_validation": 83.92470795661211,
+        "translation": 5856.365834362805,
+        "verbalization": 0.03712531179189682
+      },
+      "predicted": 10,
+      "qtype": "count",
+      "question": "How many objects are there?"
+    },
+    {
+      "case_id": "CLEVR_1_count_blue",
+      "correct": true,
+      "error": null,
+      "expected": 3,
+      "extras": {
+        "attempts": 1,
+        "parsed_type": "count",
+        "query": "findall(X, (object(X, _), attribute(X, color, blue)), L), length(L, N)",
+        "verbalized": "There are 3 blue objects.",
+        "vision_latency_ms": 1337.6551670953631
+      },
+      "failure_stage": null,
+      "latency_ms_by_stage": {
+        "execution": 2.3384587839245796,
+        "kb_generation": 0.25454163551330566,
+        "kb_validation": 67.9463748820126,
+        "translation": 2713.21495808661,
+        "verbalization": 0.029957853257656097
+      },
+      "predicted": 3,
+      "qtype": "count",
+      "question": "How many blue objects are there?"
+    },
+    {
+      "case_id": "CLEVR_1_count_metal",
+      "correct": false,
+      "error": null,
+      "expected": 7,
+      "extras": {
+        "attempts": 1,
+        "parsed_type": "count",
+        "query": "findall(X, (object(X, _), attribute(X, material, metal)), L), length(L, N)",
+        "verbalized": "There are 2 metal objects.",
+        "vision_latency_ms": 1114.2014171928167
+      },
+      "failure_stage": "correctness",
+      "latency_ms_by_stage": {
+        "execution": 2.3540412075817585,
+        "kb_generation": 0.2144589088857174,
+        "kb_validation": 58.42091701924801,
+        "translation": 2763.769708108157,
+        "verbalization": 0.033082906156778336
+      },
+      "predicted": 2,
+      "qtype": "count",
+      "question": "How many metal objects are there?"
+    },
+    {
+      "case_id": "CLEVR_1_exists_blue_cylinder",
+      "correct": true,
+      "error": null,
+      "expected": true,
+      "extras": {
+        "attempts": 1,
+        "parsed_type": "boolean",
+        "query": "object(X, cylinder), attribute(X, color, blue)",
+        "verbalized": "Yes \u2014 medium blue plastic cylinder.",
+        "vision_latency_ms": 1433.375250082463
+      },
+      "failure_stage": null,
+      "latency_ms_by_stage": {
+        "execution": 2.542833797633648,
+        "kb_generation": 0.18970808014273643,
+        "kb_validation": 76.35912485420704,
+        "translation": 1555.4167502559721,
+        "verbalization": 0.062167178839445114
+      },
+      "predicted": true,
+      "qtype": "boolean",
+      "question": "Is there a blue cylinder?"
+    },
+    {
+      "case_id": "CLEVR_1_not_exists_red_cube",
+      "correct": true,
+      "error": null,
+      "expected": false,
+      "extras": {
+        "attempts": 1,
+        "parsed_type": "boolean",
+        "query": "object(X, cube), attribute(X, color, red)",
+        "verbalized": "No.",
+        "vision_latency_ms": 1091.5631670504808
+      },
+      "failure_stage": null,
+      "latency_ms_by_stage": {
+        "execution": 3.848874941468239,
+        "kb_generation": 0.22262521088123322,
+        "kb_validation": 91.76833322271705,
+        "translation": 1553.5949999466538,
+        "verbalization": 0.011709053069353104
+      },
+      "predicted": false,
+      "qtype": "boolean",
+      "question": "Is there a red cube?"
+    },
+    {
+      "case_id": "CLEVR_2_count_total",
+      "correct": true,
+      "error": null,
+      "expected": 8,
+      "extras": {
+        "attempts": 1,
+        "parsed_type": "count",
+        "query": "findall(X, object(X, _), L), length(L, N)",
+        "verbalized": "There are 8 objects.",
+        "vision_latency_ms": 863.7985410168767
+      },
+      "failure_stage": null,
+      "latency_ms_by_stage": {
+        "execution": 2.1724170073866844,
+        "kb_generation": 0.6732498295605183,
+        "kb_validation": 88.84304203093052,
+        "translation": 6075.000625103712,
+        "verbalization": 0.02750009298324585
+      },
+      "predicted": 8,
+      "qtype": "count",
+      "question": "How many objects are there?"
+    },
+    {
+      "case_id": "CLEVR_2_count_purple",
+      "correct": true,
+      "error": null,
+      "expected": 2,
+      "extras": {
+        "attempts": 1,
+        "parsed_type": "count",
+        "query": "findall(X, (object(X, _), attribute(X, color, purple)), L), length(L, N)",
+        "verbalized": "There are 2 purple objects.",
+        "vision_latency_ms": 1071.5237502008677
+      },
+      "failure_stage": null,
+      "latency_ms_by_stage": {
+        "execution": 2.0851250737905502,
+        "kb_generation": 0.1837918534874916,
+        "kb_validation": 107.53283277153969,
+        "translation": 2654.9816667102277,
+        "verbalization": 0.029041897505521774
+      },
+      "predicted": 2,
+      "qtype": "count",
+      "question": "How many purple objects are there?"
+    },
+    {
+      "case_id": "CLEVR_2_count_metal",
+      "correct": false,
+      "error": null,
+      "expected": 6,
+      "extras": {
+        "attempts": 1,
+        "parsed_type": "count",
+        "query": "findall(X, (object(X, _), attribute(X, material, metal)), L), length(L, N)",
+        "verbalized": "There are 2 metal objects.",
+        "vision_latency_ms": 895.4845829866827
+      },
+      "failure_stage": "correctness",
+      "latency_ms_by_stage": {
+        "execution": 2.30654189363122,
+        "kb_generation": 0.2681249752640724,
+        "kb_validation": 112.38362500444055,
+        "translation": 2781.168125104159,
+        "verbalization": 0.029374845325946808
+      },
+      "predicted": 2,
+      "qtype": "count",
+      "question": "How many metal objects are there?"
+    },
+    {
+      "case_id": "CLEVR_2_exists_blue_cube",
+      "correct": false,
+      "error": null,
+      "expected": true,
+      "extras": {
+        "attempts": 1,
+        "parsed_type": "boolean",
+        "query": "object(X, cube), attribute(X, color, blue)",
+        "verbalized": "No.",
+        "vision_latency_ms": 921.7312908731401
+      },
+      "failure_stage": "correctness",
+      "latency_ms_by_stage": {
+        "execution": 1.845375169068575,
+        "kb_generation": 0.1743333414196968,
+        "kb_validation": 104.90708285942674,
+        "translation": 1529.2317913845181,
+        "verbalization": 0.01750001683831215
+      },
+      "predicted": false,
+      "qtype": "boolean",
+      "question": "Is there a blue cube?"
+    },
+    {
+      "case_id": "CLEVR_2_not_exists_red_cube",
+      "correct": true,
+      "error": null,
+      "expected": false,
+      "extras": {
+        "attempts": 1,
+        "parsed_type": "boolean",
+        "query": "object(X, cube), attribute(X, color, red)",
+        "verbalized": "No.",
+        "vision_latency_ms": 788.5256670415401
+      },
+      "failure_stage": null,
+      "latency_ms_by_stage": {
+        "execution": 1.9378331489861012,
+        "kb_generation": 0.19075023010373116,
+        "kb_validation": 74.73424961790442,
+        "translation": 1576.8373748287559,
+        "verbalization": 0.016415957361459732
+      },
+      "predicted": false,
+      "qtype": "boolean",
+      "question": "Is there a red cube?"
+    },
+    {
+      "case_id": "CLEVR_3_count_total",
+      "correct": true,
+      "error": null,
+      "expected": 7,
+      "extras": {
+        "attempts": 1,
+        "parsed_type": "count",
+        "query": "findall(X, object(X, _), L), length(L, N)",
+        "verbalized": "There are 7 objects.",
+        "vision_latency_ms": 839.5022503100336
+      },
+      "failure_stage": null,
+      "latency_ms_by_stage": {
+        "execution": 2.3272079415619373,
+        "kb_generation": 0.16429228708148003,
+        "kb_validation": 109.7382502630353,
+        "translation": 6004.845458082855,
+        "verbalization": 0.031124800443649292
+      },
+      "predicted": 7,
+      "qtype": "count",
+      "question": "How many objects are there?"
+    },
+    {
+      "case_id": "CLEVR_3_count_brown",
+      "correct": true,
+      "error": null,
+      "expected": 2,
+      "extras": {
+        "attempts": 1,
+        "parsed_type": "count",
+        "query": "findall(X, (object(X, _), attribute(X, color, brown)), L), length(L, N)",
+        "verbalized": "There are 2 brown objects.",
+        "vision_latency_ms": 1053.1923747621477
+      },
+      "failure_stage": null,
+      "latency_ms_by_stage": {
+        "execution": 2.708790823817253,
+        "kb_generation": 0.13520894572138786,
+        "kb_validation": 94.78887543082237,
+        "translation": 2763.037458062172,
+        "verbalization": 0.04433421418070793
+      },
+      "predicted": 2,
+      "qtype": "count",
+      "question": "How many brown objects are there?"
+    },
+    {
+      "case_id": "CLEVR_3_count_metal",
+      "correct": false,
+      "error": null,
+      "expected": 4,
+      "extras": {
+        "attempts": 1,
+        "parsed_type": "count",
+        "query": "findall(X, (object(X, _), attribute(X, material, metal)), L), length(L, N)",
+        "verbalized": "There are 2 metal objects.",
+        "vision_latency_ms": 1146.6172919608653
+      },
+      "failure_stage": "correctness",
+      "latency_ms_by_stage": {
+        "execution": 2.002292312681675,
+        "kb_generation": 0.3415830433368683,
+        "kb_validation": 87.86537498235703,
+        "translation": 2728.5151672549546,
+        "verbalization": 0.027624890208244324
+      },
+      "predicted": 2,
+      "qtype": "count",
+      "question": "How many metal objects are there?"
+    },
+    {
+      "case_id": "CLEVR_3_exists_brown_cylinder",
+      "correct": false,
+      "error": null,
+      "expected": true,
+      "extras": {
+        "attempts": 1,
+        "parsed_type": "boolean",
+        "query": "object(X, cylinder), attribute(X, color, brown)",
+        "verbalized": "No.",
+        "vision_latency_ms": 950.4420841112733
+      },
+      "failure_stage": "correctness",
+      "latency_ms_by_stage": {
+        "execution": 1.771249808371067,
+        "kb_generation": 0.16445806249976158,
+        "kb_validation": 79.94650024920702,
+        "translation": 1561.9027079083025,
+        "verbalization": 0.018332619220018387
+      },
+      "predicted": false,
+      "qtype": "boolean",
+      "question": "Is there a brown cylinder?"
+    },
+    {
+      "case_id": "CLEVR_3_not_exists_red_cube",
+      "correct": true,
+      "error": null,
+      "expected": false,
+      "extras": {
+        "attempts": 1,
+        "parsed_type": "boolean",
+        "query": "object(X, cube), attribute(X, color, red)",
+        "verbalized": "No.",
+        "vision_latency_ms": 786.1725832335651
+      },
+      "failure_stage": null,
+      "latency_ms_by_stage": {
+        "execution": 2.0917081274092197,
+        "kb_generation": 4.214292392134666,
+        "kb_validation": 83.01529195159674,
+        "translation": 1650.9107500314713,
+        "verbalization": 0.01808302477002144
+      },
+      "predicted": false,
+      "qtype": "boolean",
+      "question": "Is there a red cube?"
+    },
+    {
+      "case_id": "CLEVR_4_count_total",
+      "correct": true,
+      "error": null,
+      "expected": 6,
+      "extras": {
+        "attempts": 1,
+        "parsed_type": "count",
+        "query": "findall(X, object(X, _), L), length(L, N)",
+        "verbalized": "There are 6 objects.",
+        "vision_latency_ms": 715.0555420666933
+      },
+      "failure_stage": null,
+      "latency_ms_by_stage": {
+        "execution": 3.1832498498260975,
+        "kb_generation": 0.20195823162794113,
+        "kb_validation": 89.06216733157635,
+        "translation": 5995.349875185639,
+        "verbalization": 0.03083283081650734
+      },
+      "predicted": 6,
+      "qtype": "count",
+      "question": "How many objects are there?"
+    },
+    {
+      "case_id": "CLEVR_4_count_gray",
+      "correct": true,
+      "error": null,
+      "expected": 2,
+      "extras": {
+        "attempts": 1,
+        "parsed_type": "count",
+        "query": "findall(X, (object(X, _), attribute(X, color, gray)), L), length(L, N)",
+        "verbalized": "There are 2 gray objects.",
+        "vision_latency_ms": 1005.4281670600176
+      },
+      "failure_stage": null,
+      "latency_ms_by_stage": {
+        "execution": 2.3617083206772804,
+        "kb_generation": 0.13966718688607216,
+        "kb_validation": 93.4990830719471,
+        "translation": 2718.9990412443876,
+        "verbalization": 0.026332680135965347
+      },
+      "predicted": 2,
+      "qtype": "count",
+      "question": "How many gray objects are there?"
+    },
+    {
+      "case_id": "CLEVR_4_count_rubber",
+      "correct": false,
+      "error": null,
+      "expected": 5,
+      "extras": {
+        "attempts": 1,
+        "parsed_type": "count",
+        "query": "findall(X, (object(X, _), attribute(X, material, rubber)), L), length(L, N)",
+        "verbalized": "There is 1 rubber object.",
+        "vision_latency_ms": 704.8070002347231
+      },
+      "failure_stage": "correctness",
+      "latency_ms_by_stage": {
+        "execution": 1.7227078787982464,
+        "kb_generation": 0.14154193922877312,
+        "kb_validation": 88.1638340651989,
+        "translation": 2683.136959094554,
+        "verbalization": 0.029374845325946808
+      },
+      "predicted": 1,
+      "qtype": "count",
+      "question": "How many rubber objects are there?"
+    },
+    {
+      "case_id": "CLEVR_4_exists_brown_sphere",
+      "correct": false,
+      "error": null,
+      "expected": true,
+      "extras": {
+        "attempts": 1,
+        "parsed_type": "boolean",
+        "query": "object(X, sphere), attribute(X, color, brown)",
+        "verbalized": "No.",
+        "vision_latency_ms": 713.1076669320464
+      },
+      "failure_stage": "correctness",
+      "latency_ms_by_stage": {
+        "execution": 1.5653334558010101,
+        "kb_generation": 0.1443745568394661,
+        "kb_validation": 103.50975021719933,
+        "translation": 1561.357124708593,
+        "verbalization": 0.014875084161758423
+      },
+      "predicted": false,
+      "qtype": "boolean",
+      "question": "Is there a brown sphere?"
+    },
+    {
+      "case_id": "CLEVR_4_not_exists_blue_cube",
+      "correct": true,
+      "error": null,
+      "expected": false,
+      "extras": {
+        "attempts": 1,
+        "parsed_type": "boolean",
+        "query": "object(X, cube), attribute(X, color, blue)",
+        "verbalized": "No.",
+        "vision_latency_ms": 636.6074583493173
+      },
+      "failure_stage": null,
+      "latency_ms_by_stage": {
+        "execution": 2.1114167757332325,
+        "kb_generation": 0.09904196485877037,
+        "kb_validation": 76.75650017336011,
+        "translation": 1550.9669170714915,
+        "verbalization": 0.013958197087049484
+      },
+      "predicted": false,
+      "qtype": "boolean",
+      "question": "Is there a blue cube?"
+    },
+    {
+      "case_id": "CLEVR_5_count_total",
+      "correct": false,
+      "error": null,
+      "expected": 7,
+      "extras": {
+        "attempts": 1,
+        "parsed_type": "count",
+        "query": "findall(X, object(X, _), L), length(L, N)",
+        "verbalized": "There are 9 objects.",
+        "vision_latency_ms": 979.1533751413226
+      },
+      "failure_stage": "correctness",
+      "latency_ms_by_stage": {
+        "execution": 2.519208937883377,
+        "kb_generation": 0.20524999126791954,
+        "kb_validation": 90.99454106763005,
+        "translation": 5991.99500028044,
+        "verbalization": 0.0327499583363533
+      },
+      "predicted": 9,
+      "qtype": "count",
+      "question": "How many objects are there?"
+    },
+    {
+      "case_id": "CLEVR_5_count_yellow",
+      "correct": false,
+      "error": null,
+      "expected": 4,
+      "extras": {
+        "attempts": 1,
+        "parsed_type": "count",
+        "query": "findall(X, (object(X, _), attribute(X, color, yellow)), L), length(L, N)",
+        "verbalized": "There are 5 yellow objects.",
+        "vision_latency_ms": 1348.217667080462
+      },
+      "failure_stage": "correctness",
+      "latency_ms_by_stage": {
+        "execution": 2.3110415786504745,
+        "kb_generation": 0.19466597586870193,
+        "kb_validation": 81.84466604143381,
+        "translation": 2758.435416035354,
+        "verbalization": 0.030042137950658798
+      },
+      "predicted": 5,
+      "qtype": "count",
+      "question": "How many yellow objects are there?"
+    },
+    {
+      "case_id": "CLEVR_5_count_metal",
+      "correct": false,
+      "error": null,
+      "expected": 5,
+      "extras": {
+        "attempts": 1,
+        "parsed_type": "count",
+        "query": "findall(X, (object(X, _), attribute(X, material, metal)), L), length(L, N)",
+        "verbalized": "There are 4 metal objects.",
+        "vision_latency_ms": 1088.2120407186449
+      },
+      "failure_stage": "correctness",
+      "latency_ms_by_stage": {
+        "execution": 2.093542367219925,
+        "kb_generation": 0.16124965623021126,
+        "kb_validation": 91.13820875063539,
+        "translation": 2688.1303330883384,
+        "verbalization": 0.025082845240831375
+      },
+      "predicted": 4,
+      "qtype": "count",
+      "question": "How many metal objects are there?"
+    },
+    {
+      "case_id": "CLEVR_5_exists_yellow_sphere",
+      "correct": true,
+      "error": null,
+      "expected": true,
+      "extras": {
+        "attempts": 1,
+        "parsed_type": "boolean",
+        "query": "object(X, sphere), attribute(X, color, yellow)",
+        "verbalized": "Yes \u2014 small yellow metal sphere.",
+        "vision_latency_ms": 1040.880958084017
+      },
+      "failure_stage": null,
+      "latency_ms_by_stage": {
+        "execution": 2.0417911000549793,
+        "kb_generation": 0.20749960094690323,
+        "kb_validation": 88.64941727370024,
+        "translation": 1603.190291672945,
+        "verbalization": 0.041999854147434235
+      },
+      "predicted": true,
+      "qtype": "boolean",
+      "question": "Is there a yellow sphere?"
+    },
+    {
+      "case_id": "CLEVR_5_not_exists_red_cube",
+      "correct": true,
+      "error": null,
+      "expected": false,
+      "extras": {
+        "attempts": 1,
+        "parsed_type": "boolean",
+        "query": "object(X, cube), attribute(X, color, red)",
+        "verbalized": "No.",
+        "vision_latency_ms": 961.5405001677573
+      },
+      "failure_stage": null,
+      "latency_ms_by_stage": {
+        "execution": 2.3497501388192177,
+        "kb_generation": 0.22570881992578506,
+        "kb_validation": 103.14358305186033,
+        "translation": 1634.1803329996765,
+        "verbalization": 0.018916092813014984
+      },
+      "predicted": false,
+      "qtype": "boolean",
+      "question": "Is there a red cube?"
+    },
+    {
+      "case_id": "CLEVR_6_count_total",
+      "correct": true,
+      "error": null,
+      "expected": 3,
+      "extras": {
+        "attempts": 1,
+        "parsed_type": "count",
+        "query": "findall(X, object(X, _), L), length(L, N)",
+        "verbalized": "There are 3 objects.",
+        "vision_latency_ms": 615.9299579448998
+      },
+      "failure_stage": null,
+      "latency_ms_by_stage": {
+        "execution": 5.055792164057493,
+        "kb_generation": 0.13508321717381477,
+        "kb_validation": 80.54991625249386,
+        "translation": 6612.677833996713,
+        "verbalization": 0.08587539196014404
+      },
+      "predicted": 3,
+      "qtype": "count",
+      "question": "How many objects are there?"
+    },
+    {
+      "case_id": "CLEVR_6_count_blue",
+      "correct": true,
+      "error": null,
+      "expected": 1,
+      "extras": {
+        "attempts": 1,
+        "parsed_type": "count",
+        "query": "findall(X, (object(X, _), attribute(X, color, blue)), L), length(L, N)",
+        "verbalized": "There is 1 blue object.",
+        "vision_latency_ms": 899.6009998954833
+      },
+      "failure_stage": null,
+      "latency_ms_by_stage": {
+        "execution": 2.848333679139614,
+        "kb_generation": 0.1448746770620346,
+        "kb_validation": 101.61595931276679,
+        "translation": 3169.6393750607967,
+        "verbalization": 0.04445808008313179
+      },
+      "predicted": 1,
+      "qtype": "count",
+      "question": "How many blue objects are there?"
+    },
+    {
+      "case_id": "CLEVR_6_count_rubber",
+      "correct": false,
+      "error": null,
+      "expected": 2,
+      "extras": {
+        "attempts": 1,
+        "parsed_type": "count",
+        "query": "findall(X, (object(X, _), attribute(X, material, rubber)), L), length(L, N)",
+        "verbalized": "There is 1 rubber object.",
+        "vision_latency_ms": 977.9792916961014
+      },
+      "failure_stage": "correctness",
+      "latency_ms_by_stage": {
+        "execution": 2.4480419233441353,
+        "kb_generation": 0.10466575622558594,
+        "kb_validation": 94.88212503492832,
+        "translation": 3078.2227921299636,
+        "verbalization": 0.03933301195502281
+      },
+      "predicted": 1,
+      "qtype": "count",
+      "question": "How many rubber objects are there?"
+    },
+    {
+      "case_id": "CLEVR_6_exists_blue_cube",
+      "correct": false,
+      "error": null,
+      "expected": true,
+      "extras": {
+        "attempts": 1,
+        "parsed_type": "boolean",
+        "query": "object(X, cube), attribute(X, color, blue)",
+        "verbalized": "No.",
+        "vision_latency_ms": 910.2868330664933
+      },
+      "failure_stage": "correctness",
+      "latency_ms_by_stage": {
+        "execution": 2.1367911249399185,
+        "kb_generation": 0.4352917894721031,
+        "kb_validation": 139.52562492340803,
+        "translation": 1756.6613340750337,
+        "verbalization": 0.021916814148426056
+      },
+      "predicted": false,
+      "qtype": "boolean",
+      "question": "Is there a blue cube?"
+    },
+    {
+      "case_id": "CLEVR_6_not_exists_red_cube",
+      "correct": true,
+      "error": null,
+      "expected": false,
+      "extras": {
+        "attempts": 1,
+        "parsed_type": "boolean",
+        "query": "object(X, cube), attribute(X, color, red)",
+        "verbalized": "No.",
+        "vision_latency_ms": 570.5597503110766
+      },
+      "failure_stage": null,
+      "latency_ms_by_stage": {
+        "execution": 2.5235838256776333,
+        "kb_generation": 0.08566724136471748,
+        "kb_validation": 81.77550043910742,
+        "translation": 1784.4386673532426,
+        "verbalization": 0.02037500962615013
+      },
+      "predicted": false,
+      "qtype": "boolean",
+      "question": "Is there a red cube?"
+    },
+    {
+      "case_id": "CLEVR_7_count_total",
+      "correct": true,
+      "error": null,
+      "expected": 4,
+      "extras": {
+        "attempts": 1,
+        "parsed_type": "count",
+        "query": "findall(X, object(X, _), L), length(L, N)",
+        "verbalized": "There are 4 objects.",
+        "vision_latency_ms": 754.7996672801673
+      },
+      "failure_stage": null,
+      "latency_ms_by_stage": {
+        "execution": 2.4114581756293774,
+        "kb_generation": 0.09291619062423706,
+        "kb_validation": 81.08237478882074,
+        "translation": 6588.816583156586,
+        "verbalization": 0.028999987989664078
+      },
+      "predicted": 4,
+      "qtype": "count",
+      "question": "How many objects are there?"
+    },
+    {
+      "case_id": "CLEVR_7_count_brown",
+      "correct": true,
+      "error": null,
+      "expected": 2,
+      "extras": {
+        "attempts": 1,
+        "parsed_type": "count",
+        "query": "findall(X, (object(X, _), attribute(X, color, brown)), L), length(L, N)",
+        "verbalized": "There are 2 brown objects.",
+        "vision_latency_ms": 915.7735831104219
+      },
+      "failure_stage": null,
+      "latency_ms_by_stage": {
+        "execution": 2.827124670147896,
+        "kb_generation": 0.24291686713695526,
+        "kb_validation": 105.6742500513792,
+        "translation": 3141.002709046006,
+        "verbalization": 0.03208266571164131
+      },
+      "predicted": 2,
+      "qtype": "count",
+      "question": "How many brown objects are there?"
+    },
+    {
+      "case_id": "CLEVR_7_count_rubber",
+      "correct": false,
+      "error": null,
+      "expected": 4,
+      "extras": {
+        "attempts": 1,
+        "parsed_type": "count",
+        "query": "findall(X, (object(X, _), attribute(X, material, rubber)), L), length(L, N)",
+        "verbalized": "There are 3 rubber objects.",
+        "vision_latency_ms": 979.3392913416028
+      },
+      "failure_stage": "correctness",
+      "latency_ms_by_stage": {
+        "execution": 3.360457718372345,
+        "kb_generation": 1.4518750831484795,
+        "kb_validation": 121.80654192343354,
+        "translation": 2973.230415955186,
+        "verbalization": 0.03329198807477951
+      },
+      "predicted": 3,
+      "qtype": "count",
+      "question": "How many rubber objects are there?"
+    },
+    {
+      "case_id": "CLEVR_7_exists_brown_cube",
+      "correct": false,
+      "error": null,
+      "expected": true,
+      "extras": {
+        "attempts": 1,
+        "parsed_type": "boolean",
+        "query": "object(X, cube), attribute(X, color, brown)",
+        "verbalized": "No.",
+        "vision_latency_ms": 832.7963752672076
+      },
+      "failure_stage": "correctness",
+      "latency_ms_by_stage": {
+        "execution": 2.9899999499320984,
+        "kb_generation": 0.20191725343465805,
+        "kb_validation": 100.79050017520785,
+        "translation": 1798.8424161449075,
+        "verbalization": 0.018875114619731903
+      },
+      "predicted": false,
+      "qtype": "boolean",
+      "question": "Is there a brown cube?"
+    },
+    {
+      "case_id": "CLEVR_7_not_exists_red_cube",
+      "correct": true,
+      "error": null,
+      "expected": false,
+      "extras": {
+        "attempts": 1,
+        "parsed_type": "boolean",
+        "query": "object(X, cube), attribute(X, color, red)",
+        "verbalized": "No.",
+        "vision_latency_ms": 636.5828746929765
+      },
+      "failure_stage": null,
+      "latency_ms_by_stage": {
+        "execution": 1.9976249895989895,
+        "kb_generation": 0.13033300638198853,
+        "kb_validation": 83.5873750038445,
+        "translation": 1692.8706667385995,
+        "verbalization": 0.014790799468755722
+      },
+      "predicted": false,
+      "qtype": "boolean",
+      "question": "Is there a red cube?"
+    },
+    {
+      "case_id": "CLEVR_8_count_total",
+      "correct": true,
+      "error": null,
+      "expected": 9,
+      "extras": {
+        "attempts": 1,
+        "parsed_type": "count",
+        "query": "findall(X, object(X, _), L), length(L, N)",
+        "verbalized": "There are 9 objects.",
+        "vision_latency_ms": 1089.2754159867764
+      },
+      "failure_stage": null,
+      "latency_ms_by_stage": {
+        "execution": 2.733458299189806,
+        "kb_generation": 0.2792919985949993,
+        "kb_validation": 113.36279101669788,
+        "translation": 6675.706416834146,
+        "verbalization": 0.03295810893177986
+      },
+      "predicted": 9,
+      "qtype": "count",
+      "question": "How many objects are there?"
+    },
+    {
+      "case_id": "CLEVR_8_count_purple",
+      "correct": false,
+      "error": null,
+      "expected": 3,
+      "extras": {
+        "attempts": 1,
+        "parsed_type": "count",
+        "query": "findall(X, (object(X, _), attribute(X, color, purple)), L), length(L, N)",
+        "verbalized": "There are 4 purple objects.",
+        "vision_latency_ms": 1340.950584039092
+      },
+      "failure_stage": "correctness",
+      "latency_ms_by_stage": {
+        "execution": 2.6206672191619873,
+        "kb_generation": 0.6149169057607651,
+        "kb_validation": 119.62391715496778,
+        "translation": 2975.8237916976213,
+        "verbalization": 0.03254180774092674
+      },
+      "predicted": 4,
+      "qtype": "count",
+      "question": "How many purple objects are there?"
+    },
+    {
+      "case_id": "CLEVR_8_count_metal",
+      "correct": false,
+      "error": null,
+      "expected": 5,
+      "extras": {
+        "attempts": 1,
+        "parsed_type": "count",
+        "query": "findall(X, (object(X, _), attribute(X, material, metal)), L), length(L, N)",
+        "verbalized": "There are 3 metal objects.",
+        "vision_latency_ms": 1229.4717081822455
+      },
+      "failure_stage": "correctness",
+      "latency_ms_by_stage": {
+        "execution": 2.4081673473119736,
+        "kb_generation": 0.28183311223983765,
+        "kb_validation": 119.05066715553403,
+        "translation": 2917.9923748597503,
+        "verbalization": 0.03145821392536163
+      },
+      "predicted": 3,
+      "qtype": "count",
+      "question": "How many metal objects are there?"
+    },
+    {
+      "case_id": "CLEVR_8_exists_brown_cube",
+      "correct": false,
+      "error": null,
+      "expected": true,
+      "extras": {
+        "attempts": 1,
+        "parsed_type": "boolean",
+        "query": "object(X, cube), attribute(X, color, brown)",
+        "verbalized": "No.",
+        "vision_latency_ms": 1410.2294999174774
+      },
+      "failure_stage": "correctness",
+      "latency_ms_by_stage": {
+        "execution": 2.072833012789488,
+        "kb_generation": 0.8833338506519794,
+        "kb_validation": 88.97316735237837,
+        "translation": 1743.4212919324636,
+        "verbalization": 0.016416888684034348
+      },
+      "predicted": false,
+      "qtype": "boolean",
+      "question": "Is there a brown cube?"
+    },
+    {
+      "case_id": "CLEVR_8_not_exists_red_cube",
+      "correct": true,
+      "error": null,
+      "expected": false,
+      "extras": {
+        "attempts": 1,
+        "parsed_type": "boolean",
+        "query": "object(X, cube), attribute(X, color, red)",
+        "verbalized": "No.",
+        "vision_latency_ms": 1105.8374997228384
+      },
+      "failure_stage": null,
+      "latency_ms_by_stage": {
+        "execution": 2.594833727926016,
+        "kb_generation": 0.4136674106121063,
+        "kb_validation": 97.38316666334867,
+        "translation": 1737.9112080670893,
+        "verbalization": 0.016999896615743637
+      },
+      "predicted": false,
+      "qtype": "boolean",
+      "question": "Is there a red cube?"
+    },
+    {
+      "case_id": "CLEVR_9_count_total",
+      "correct": true,
+      "error": null,
+      "expected": 8,
+      "extras": {
+        "attempts": 1,
+        "parsed_type": "count",
+        "query": "findall(X, object(X, _), L), length(L, N)",
+        "verbalized": "There are 8 objects.",
+        "vision_latency_ms": 1228.5076668486
+      },
+      "failure_stage": null,
+      "latency_ms_by_stage": {
+        "execution": 3.2757921144366264,
+        "kb_generation": 0.23337500169873238,
+        "kb_validation": 94.16987467557192,
+        "translation": 6257.802791893482,
+        "verbalization": 0.039082951843738556
+      },
+      "predicted": 8,
+      "qtype": "count",
+      "question": "How many objects are there?"
+    },
+    {
+      "case_id": "CLEVR_9_count_gray",
+      "correct": true,
+      "error": null,
+      "expected": 3,
+      "extras": {
+        "attempts": 1,
+        "parsed_type": "count",
+        "query": "findall(X, (object(X, _), attribute(X, color, gray)), L), length(L, N)",
+        "verbalized": "There are 3 gray objects.",
+        "vision_latency_ms": 1179.6709159389138
+      },
+      "failure_stage": null,
+      "latency_ms_by_stage": {
+        "execution": 3.224625252187252,
+        "kb_generation": 0.23691728711128235,
+        "kb_validation": 94.26641697064042,
+        "translation": 2901.590208057314,
+        "verbalization": 0.027791131287813187
+      },
+      "predicted": 3,
+      "qtype": "count",
+      "question": "How many gray objects are there?"
+    },
+    {
+      "case_id": "CLEVR_9_count_metal",
+      "correct": false,
+      "error": null,
+      "expected": 4,
+      "extras": {
+        "attempts": 1,
+        "parsed_type": "count",
+        "query": "findall(X, (object(X, _), attribute(X, material, metal)), L), length(L, N)",
+        "verbalized": "There are 3 metal objects.",
+        "vision_latency_ms": 1101.2444579973817
+      },
+      "failure_stage": "correctness",
+      "latency_ms_by_stage": {
+        "execution": 2.7353749610483646,
+        "kb_generation": 0.1855422742664814,
+        "kb_validation": 117.87691665813327,
+        "translation": 3000.643208157271,
+        "verbalization": 0.03379210829734802
+      },
+      "predicted": 3,
+      "qtype": "count",
+      "question": "How many metal objects are there?"
+    },
+    {
+      "case_id": "CLEVR_9_exists_blue_cube",
+      "correct": false,
+      "error": null,
+      "expected": true,
+      "extras": {
+        "attempts": 1,
+        "parsed_type": "boolean",
+        "query": "object(X, cube), attribute(X, color, blue)",
+        "verbalized": "No.",
+        "vision_latency_ms": 1583.8867090642452
+      },
+      "failure_stage": "correctness",
+      "latency_ms_by_stage": {
+        "execution": 2.6974580250680447,
+        "kb_generation": 0.3836248070001602,
+        "kb_validation": 129.59541706368327,
+        "translation": 1737.0519167743623,
+        "verbalization": 0.01754099503159523
+      },
+      "predicted": false,
+      "qtype": "boolean",
+      "question": "Is there a blue cube?"
+    },
+    {
+      "case_id": "CLEVR_9_not_exists_red_cube",
+      "correct": true,
+      "error": null,
+      "expected": false,
+      "extras": {
+        "attempts": 1,
+        "parsed_type": "boolean",
+        "query": "object(X, cube), attribute(X, color, red)",
+        "verbalized": "No.",
+        "vision_latency_ms": 1168.8076667487621
+      },
+      "failure_stage": null,
+      "latency_ms_by_stage": {
+        "execution": 2.3743747733533382,
+        "kb_generation": 0.7357499562203884,
+        "kb_validation": 101.28608299419284,
+        "translation": 1716.545833274722,
+        "verbalization": 0.017999671399593353
+      },
+      "predicted": false,
+      "qtype": "boolean",
+      "question": "Is there a red cube?"
+    }
+  ],
+  "summary": {
+    "accuracy": 0.56,
+    "by_qtype": {
+      "unknown": {
+        "accuracy": 0.56,
+        "correct": 28,
+        "n": 50
+      }
+    },
+    "correct": 28,
+    "failure_stage_counts": {
+      "correctness": 22
+    },
+    "mean_latency_ms_by_stage": {
+      "execution": 2.739175036549568,
+      "kb_generation": 0.34903760999441147,
+      "kb_validation": 93.59440172091126,
+      "translation": 3224.697746708989,
+      "verbalization": 0.0295966025441885
+    },
+    "n": 50
+  }
+}
