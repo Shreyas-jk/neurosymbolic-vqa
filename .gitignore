@@ -10,5 +10,8 @@ dist/
 data/clevr_test_subset/
 evaluation/results/*.json
 evaluation/results/*.txt
+# Per-run eval results are gitignored, but baseline anchors are checked in
+# so historical scores have a reproducible source-of-truth across phases.
+!evaluation/results/*baseline*.json
 .DS_Store
 .env
