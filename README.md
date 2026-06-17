@@ -1,3 +1,14 @@
+---
+title: Neurosymbolic VQA
+emoji: 🧠
+colorFrom: blue
+colorTo: purple
+sdk: gradio
+sdk_version: 4.44.1
+app_file: demo/app.py
+pinned: false
+---
+
 # Neurosymbolic Visual Question Answering
 
 A visual question answering system that grounds answers in verifiable Prolog
@@ -5,7 +16,9 @@ logic over CLIP / OWL-ViT scene graphs. Perception runs on local vision models;
 reasoning runs on SWI-Prolog; the LLM only translates English to a query that
 the symbolic stack executes.
 
-**Live demo:** _coming soon — see [docs/DEPLOY_SPACES.md](docs/DEPLOY_SPACES.md) for self-host instructions._
+**Live demo:** see [docs/DEPLOY_SPACES.md](docs/DEPLOY_SPACES.md) for the
+one-command Spaces deployment (synthetic-only mode; the vision pipeline runs
+locally only).
 
 [![CI](https://github.com/Shreyas-jk/neurosymbolic-vqa/actions/workflows/ci.yml/badge.svg)](https://github.com/Shreyas-jk/neurosymbolic-vqa/actions/workflows/ci.yml)
 
