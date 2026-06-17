@@ -16,3 +16,6 @@ evaluation/results/*.txt
 .DS_Store
 .env
 *.log
+
+# Gradio share-tunnel cert / flagging cache (runtime artifact)
+.gradio/
