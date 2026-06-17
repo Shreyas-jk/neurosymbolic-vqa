@@ -1,0 +1,735 @@
+{
+  "cases": [
+    {
+      "case_id": "E1",
+      "correct": true,
+      "error": null,
+      "expected": true,
+      "extras": {
+        "attempts": 1,
+        "parsed_type": "boolean",
+        "query": "object(X, cube), attribute(X, color, red)",
+        "verbalized": "Yes \u2014 large red metal cube.",
+        "vision_latency_ms": 0.0
+      },
+      "failure_stage": null,
+      "latency_ms_by_stage": {
+        "execution": 12.241833843290806,
+        "kb_generation": 0.06312504410743713,
+        "kb_validation": 13.22112511843443,
+        "translation": 5254.44612512365,
+        "verbalization": 0.0538327731192112
+      },
+      "predicted": true,
+      "qtype": "boolean",
+      "question": "Is there a red cube?"
+    },
+    {
+      "case_id": "E2",
+      "correct": true,
+      "error": null,
+      "expected": false,
+      "extras": {
+        "attempts": 1,
+        "parsed_type": "boolean",
+        "query": "object(X, sphere), attribute(X, color, green)",
+        "verbalized": "No.",
+        "vision_latency_ms": 0.0
+      },
+      "failure_stage": null,
+      "latency_ms_by_stage": {
+        "execution": 1.1980412527918816,
+        "kb_generation": 0.07620779797434807,
+        "kb_validation": 11.093625333160162,
+        "translation": 933.7862906977534,
+        "verbalization": 0.016292091459035873
+      },
+      "predicted": false,
+      "qtype": "boolean",
+      "question": "Is there a green sphere?"
+    },
+    {
+      "case_id": "E3",
+      "correct": true,
+      "error": null,
+      "expected": true,
+      "extras": {
+        "attempts": 1,
+        "parsed_type": "boolean",
+        "query": "object(T, table)",
+        "verbalized": "Yes \u2014 brown wood table.",
+        "vision_latency_ms": 0.0
+      },
+      "failure_stage": null,
+      "latency_ms_by_stage": {
+        "execution": 1.1452091857790947,
+        "kb_generation": 0.04991702735424042,
+        "kb_validation": 14.93750000372529,
+        "translation": 2312.9059174098074,
+        "verbalization": 0.025041867047548294
+      },
+      "predicted": true,
+      "qtype": "boolean",
+      "question": "Is there a table?"
+    },
+    {
+      "case_id": "E4",
+      "correct": true,
+      "error": null,
+      "expected": false,
+      "extras": {
+        "attempts": 1,
+        "parsed_type": "boolean",
+        "query": "object(X, _), object(Y, cube)",
+        "verbalized": "No.",
+        "vision_latency_ms": 0.0
+      },
+      "failure_stage": null,
+      "latency_ms_by_stage": {
+        "execution": 1.1887094005942345,
+        "kb_generation": 0.012624543160200119,
+        "kb_validation": 9.501874912530184,
+        "translation": 2412.287666928023,
+        "verbalization": 0.019375234842300415
+      },
+      "predicted": false,
+      "qtype": "boolean",
+      "question": "Is there any cube?"
+    },
+    {
+      "case_id": "E5",
+      "correct": false,
+      "error": null,
+      "expected": true,
+      "extras": {
+        "attempts": 1,
+        "parsed_type": "boolean",
+        "query": "object(_X, wood)",
+        "verbalized": "No.",
+        "vision_latency_ms": 0.0
+      },
+      "failure_stage": "correctness",
+      "latency_ms_by_stage": {
+        "execution": 1.0953331366181374,
+        "kb_generation": 0.05487492308020592,
+        "kb_validation": 12.225042097270489,
+        "translation": 2236.656750086695,
+        "verbalization": 0.01683272421360016
+      },
+      "predicted": false,
+      "qtype": "boolean",
+      "question": "Are there any wooden objects?"
+    },
+    {
+      "case_id": "E6",
+      "correct": true,
+      "error": null,
+      "expected": true,
+      "extras": {
+        "attempts": 1,
+        "parsed_type": "boolean",
+        "query": "object(X, cylinder), attribute(X, material, metal)",
+        "verbalized": "Yes \u2014 medium green metal cylinder.",
+        "vision_latency_ms": 0.0
+      },
+      "failure_stage": null,
+      "latency_ms_by_stage": {
+        "execution": 1.058042049407959,
+        "kb_generation": 0.05979090929031372,
+        "kb_validation": 9.681375231593847,
+        "translation": 2504.5065423473716,
+        "verbalization": 0.029750168323516846
+      },
+      "predicted": true,
+      "qtype": "boolean",
+      "question": "Is there a metal cylinder?"
+    },
+    {
+      "case_id": "C1",
+      "correct": false,
+      "error": "translation failed after 3 attempts: NL\u2192Prolog translation failed after 3 attempts",
+      "expected": 3,
+      "extras": {
+        "attempts": 3,
+        "vision_latency_ms": 0.0
+      },
+      "failure_stage": "translation",
+      "latency_ms_by_stage": {
+        "kb_generation": 0.04658428952097893,
+        "kb_validation": 9.820207953453064,
+        "translation": 3743.074332829565
+      },
+      "predicted": null,
+      "qtype": "count",
+      "question": "How many objects are there?"
+    },
+    {
+      "case_id": "C2",
+      "correct": true,
+      "error": null,
+      "expected": 1,
+      "extras": {
+        "attempts": 1,
+        "parsed_type": "count",
+        "query": "findall(X, object(X, cube), L), length(L, N)",
+        "verbalized": "There is 1 cube.",
+        "vision_latency_ms": 0.0
+      },
+      "failure_stage": null,
+      "latency_ms_by_stage": {
+        "execution": 1.2024580501019955,
+        "kb_generation": 0.2997498959302902,
+        "kb_validation": 34.2265828512609,
+        "translation": 1492.5017496570945,
+        "verbalization": 0.02474989742040634
+      },
+      "predicted": 1,
+      "qtype": "count",
+      "question": "How many cubes are there?"
+    },
+    {
+      "case_id": "C3",
+      "correct": false,
+      "error": "translation failed after 3 attempts: NL\u2192Prolog translation failed after 3 attempts",
+      "expected": 2,
+      "extras": {
+        "attempts": 3,
+        "vision_latency_ms": 0.0
+      },
+      "failure_stage": "translation",
+      "latency_ms_by_stage": {
+        "kb_generation": 0.0415826216340065,
+        "kb_validation": 9.877458214759827,
+        "translation": 7049.421917181462
+      },
+      "predicted": null,
+      "qtype": "count",
+      "question": "How many chairs are there?"
+    },
+    {
+      "case_id": "C4",
+      "correct": false,
+      "error": "translation failed after 3 attempts: NL\u2192Prolog translation failed after 3 attempts",
+      "expected": 3,
+      "extras": {
+        "attempts": 3,
+        "vision_latency_ms": 0.0
+      },
+      "failure_stage": "translation",
+      "latency_ms_by_stage": {
+        "kb_generation": 0.31579192727804184,
+        "kb_validation": 35.27291724458337,
+        "translation": 6067.321291659027
+      },
+      "predicted": null,
+      "qtype": "count",
+      "question": "How many black objects are there?"
+    },
+    {
+      "case_id": "C5",
+      "correct": false,
+      "error": null,
+      "expected": 2,
+      "extras": {
+        "attempts": 1,
+        "parsed_type": "count",
+        "query": "attribute(X, material, metal)",
+        "verbalized": "I could not determine the count.",
+        "vision_latency_ms": 0.0
+      },
+      "failure_stage": "correctness",
+      "latency_ms_by_stage": {
+        "execution": 1.4285002835094929,
+        "kb_generation": 0.3197500482201576,
+        "kb_validation": 34.44733330979943,
+        "translation": 2742.507666349411,
+        "verbalization": 0.03458419814705849
+      },
+      "predicted": null,
+      "qtype": "count",
+      "question": "How many metal objects are there?"
+    },
+    {
+      "case_id": "C6",
+      "correct": true,
+      "error": null,
+      "expected": 1,
+      "extras": {
+        "attempts": 2,
+        "parsed_type": "count",
+        "query": "findall(X, (object(X, _), attribute(X, color, green)), L), length(L, N)",
+        "verbalized": "There is 1 green object.",
+        "vision_latency_ms": 0.0
+      },
+      "failure_stage": null,
+      "latency_ms_by_stage": {
+        "execution": 1.2792907655239105,
+        "kb_generation": 0.05879206582903862,
+        "kb_validation": 10.58216579258442,
+        "translation": 4381.595999933779,
+        "verbalization": 0.028625130653381348
+      },
+      "predicted": 1,
+      "qtype": "count",
+      "question": "How many green objects are there?"
+    },
+    {
+      "case_id": "A1",
+      "correct": false,
+      "error": "qtype mismatch: expected 'attribute', LLM returned 'boolean'",
+      "expected": "red",
+      "extras": {
+        "attempts": 1,
+        "parsed_type": "boolean",
+        "query": "object(X, cube), attribute(X, color, red)",
+        "vision_latency_ms": 0.0
+      },
+      "failure_stage": "translation",
+      "latency_ms_by_stage": {
+        "kb_generation": 0.051042065024375916,
+        "kb_validation": 10.304083116352558,
+        "translation": 2508.978833910078
+      },
+      "predicted": null,
+      "qtype": "attribute",
+      "question": "What color is the cube?"
+    },
+    {
+      "case_id": "A2",
+      "correct": true,
+      "error": null,
+      "expected": "small",
+      "extras": {
+        "attempts": 1,
+        "parsed_type": "attribute",
+        "query": "object(X, sphere), attribute(X, size, S)",
+        "verbalized": "The sphere is small.",
+        "vision_latency_ms": 0.0
+      },
+      "failure_stage": null,
+      "latency_ms_by_stage": {
+        "execution": 1.1898749507963657,
+        "kb_generation": 0.07108412683010101,
+        "kb_validation": 10.574041865766048,
+        "translation": 1163.9943751506507,
+        "verbalization": 0.03433274105191231
+      },
+      "predicted": "small",
+      "qtype": "attribute",
+      "question": "What size is the sphere?"
+    },
+    {
+      "case_id": "A3",
+      "correct": false,
+      "error": null,
+      "expected": "metal",
+      "extras": {
+        "attempts": 1,
+        "parsed_type": "attribute",
+        "query": "object(X, cylinder), attribute(X, material, metal)",
+        "verbalized": "I could not determine that attribute.",
+        "vision_latency_ms": 0.0
+      },
+      "failure_stage": "correctness",
+      "latency_ms_by_stage": {
+        "execution": 1.1588330380618572,
+        "kb_generation": 0.04425039514899254,
+        "kb_validation": 10.234000161290169,
+        "translation": 1139.4027499482036,
+        "verbalization": 0.032499898225069046
+      },
+      "predicted": null,
+      "qtype": "attribute",
+      "question": "What material is the cylinder?"
+    },
+    {
+      "case_id": "A4",
+      "correct": false,
+      "error": "qtype mismatch: expected 'attribute', LLM returned 'boolean'",
+      "expected": "red",
+      "extras": {
+        "attempts": 1,
+        "parsed_type": "boolean",
+        "query": "object(X, cube), attribute(X, color, red)",
+        "vision_latency_ms": 0.0
+      },
+      "failure_stage": "translation",
+      "latency_ms_by_stage": {
+        "kb_generation": 0.03733299672603607,
+        "kb_validation": 10.344292037189007,
+        "translation": 2526.330332737416
+      },
+      "predicted": null,
+      "qtype": "attribute",
+      "question": "What color is the cube?"
+    },
+    {
+      "case_id": "A5",
+      "correct": true,
+      "error": null,
+      "expected": "glass",
+      "extras": {
+        "attempts": 1,
+        "parsed_type": "attribute",
+        "query": "object(B, bottle), attribute(B, material, M)",
+        "verbalized": "The bottle is glass.",
+        "vision_latency_ms": 0.0
+      },
+      "failure_stage": null,
+      "latency_ms_by_stage": {
+        "execution": 1.4619166031479836,
+        "kb_generation": 0.13283314183354378,
+        "kb_validation": 11.76649983972311,
+        "translation": 2759.2243747785687,
+        "verbalization": 0.03333296626806259
+      },
+      "predicted": "glass",
+      "qtype": "attribute",
+      "question": "What material is the bottle?"
+    },
+    {
+      "case_id": "A6",
+      "correct": true,
+      "error": null,
+      "expected": "large",
+      "extras": {
+        "attempts": 1,
+        "parsed_type": "attribute",
+        "query": "object(X, cube), attribute(X, size, S)",
+        "verbalized": "The cube is large.",
+        "vision_latency_ms": 0.0
+      },
+      "failure_stage": null,
+      "latency_ms_by_stage": {
+        "execution": 1.2292498722672462,
+        "kb_generation": 0.05504116415977478,
+        "kb_validation": 10.88241720572114,
+        "translation": 2864.1909998841584,
+        "verbalization": 0.04150019958615303
+      },
+      "predicted": "large",
+      "qtype": "attribute",
+      "question": "What size is the cube?"
+    },
+    {
+      "case_id": "S1",
+      "correct": true,
+      "error": null,
+      "expected": "cube",
+      "extras": {
+        "attempts": 1,
+        "parsed_type": "object",
+        "query": "left_of(X, Y)",
+        "verbalized": "The large red metal cube (id=obj_0).",
+        "vision_latency_ms": 0.0
+      },
+      "failure_stage": null,
+      "latency_ms_by_stage": {
+        "execution": 1.1807908304035664,
+        "kb_generation": 0.0588330440223217,
+        "kb_validation": 10.039832908660173,
+        "translation": 937.6847078092396,
+        "verbalization": 0.03987504169344902
+      },
+      "predicted": "obj_0",
+      "qtype": "object",
+      "question": "What is to the left of the sphere?"
+    },
+    {
+      "case_id": "S2",
+      "correct": false,
+      "error": null,
+      "expected": "sphere",
+      "extras": {
+        "attempts": 1,
+        "parsed_type": "object",
+        "query": "left_of(X, Y), object(Y, sphere), object(X, _)",
+        "verbalized": "The large red metal cube (id=obj_0).",
+        "vision_latency_ms": 0.0
+      },
+      "failure_stage": "correctness",
+      "latency_ms_by_stage": {
+        "execution": 1.2444579042494297,
+        "kb_generation": 0.0488748773932457,
+        "kb_validation": 10.962999891489744,
+        "translation": 1492.5498752854764,
+        "verbalization": 0.028292182832956314
+      },
+      "predicted": "obj_0",
+      "qtype": "object",
+      "question": "What is to the right of the cube?"
+    },
+    {
+      "case_id": "S3",
+      "correct": true,
+      "error": null,
+      "expected": "apple",
+      "extras": {
+        "attempts": 1,
+        "parsed_type": "object",
+        "query": "next_to(X, Y), object(Y, cup), X \\= Y",
+        "verbalized": "The red apple (id=obj_3).",
+        "vision_latency_ms": 0.0
+      },
+      "failure_stage": null,
+      "latency_ms_by_stage": {
+        "execution": 1.1871671304106712,
+        "kb_generation": 0.052957795560359955,
+        "kb_validation": 9.970999788492918,
+        "translation": 2847.3896253854036,
+        "verbalization": 0.032833777368068695
+      },
+      "predicted": "obj_3",
+      "qtype": "object",
+      "question": "What is next to the cup?"
+    },
+    {
+      "case_id": "S4",
+      "correct": false,
+      "error": "qtype mismatch: expected 'object', LLM returned 'boolean'",
+      "expected": "monitor",
+      "extras": {
+        "attempts": 1,
+        "parsed_type": "boolean",
+        "query": "object(T, table), object(B, bottle), on_top_of(B, T)",
+        "vision_latency_ms": 0.0
+      },
+      "failure_stage": "translation",
+      "latency_ms_by_stage": {
+        "kb_generation": 0.04637520760297775,
+        "kb_validation": 10.829833336174488,
+        "translation": 2768.2965407148004
+      },
+      "predicted": null,
+      "qtype": "object",
+      "question": "What is on top of the desk?"
+    },
+    {
+      "case_id": "S5",
+      "correct": true,
+      "error": null,
+      "expected": "cylinder",
+      "extras": {
+        "attempts": 1,
+        "parsed_type": "object",
+        "query": "above(X, Y)",
+        "verbalized": "The medium green metal cylinder (id=obj_2).",
+        "vision_latency_ms": 0.0
+      },
+      "failure_stage": null,
+      "latency_ms_by_stage": {
+        "execution": 1.4752917923033237,
+        "kb_generation": 0.05250005051493645,
+        "kb_validation": 10.589708108454943,
+        "translation": 2561.962333973497,
+        "verbalization": 0.052040908485651016
+      },
+      "predicted": "obj_2",
+      "qtype": "object",
+      "question": "What is above the cube?"
+    },
+    {
+      "case_id": "S6",
+      "correct": false,
+      "error": "translation failed after 3 attempts: NL\u2192Prolog translation failed after 3 attempts",
+      "expected": "cube",
+      "extras": {
+        "attempts": 3,
+        "vision_latency_ms": 0.0
+      },
+      "failure_stage": "translation",
+      "latency_ms_by_stage": {
+        "kb_generation": 0.06533274427056313,
+        "kb_validation": 11.555165983736515,
+        "translation": 4338.904708158225
+      },
+      "predicted": null,
+      "qtype": "object",
+      "question": "What is below the cylinder?"
+    },
+    {
+      "case_id": "M1",
+      "correct": true,
+      "error": null,
+      "expected": "red",
+      "extras": {
+        "attempts": 1,
+        "parsed_type": "attribute",
+        "query": "object(Y, sphere), left_of(X, Y), attribute(X, color, C)",
+        "verbalized": "The object to the left of the sphere is red.",
+        "vision_latency_ms": 0.0
+      },
+      "failure_stage": null,
+      "latency_ms_by_stage": {
+        "execution": 1.1778748594224453,
+        "kb_generation": 0.05320832133293152,
+        "kb_validation": 10.483291931450367,
+        "translation": 1317.0249587856233,
+        "verbalization": 0.03787502646446228
+      },
+      "predicted": "red",
+      "qtype": "attribute",
+      "question": "What color is the object to the left of the sphere?"
+    },
+    {
+      "case_id": "M2",
+      "correct": true,
+      "error": null,
+      "expected": "large",
+      "extras": {
+        "attempts": 1,
+        "parsed_type": "attribute",
+        "query": "object(X, cube), attribute(X, material, metal), attribute(X, size, S)",
+        "verbalized": "The metal cube is large.",
+        "vision_latency_ms": 0.0
+      },
+      "failure_stage": null,
+      "latency_ms_by_stage": {
+        "execution": 1.1367076076567173,
+        "kb_generation": 0.061125028878450394,
+        "kb_validation": 10.548874735832214,
+        "translation": 1358.0801668576896,
+        "verbalization": 0.03737490624189377
+      },
+      "predicted": "large",
+      "qtype": "attribute",
+      "question": "What size is the metal cube?"
+    },
+    {
+      "case_id": "M3",
+      "correct": false,
+      "error": "qtype mismatch: expected 'attribute', LLM returned 'object'",
+      "expected": "green",
+      "extras": {
+        "attempts": 1,
+        "parsed_type": "object",
+        "query": "relation(cube, above, Y), relation(Y, left_of, X), object(X, _), object(Y, _)",
+        "vision_latency_ms": 0.0
+      },
+      "failure_stage": "translation",
+      "latency_ms_by_stage": {
+        "kb_generation": 0.058542005717754364,
+        "kb_validation": 11.631166096776724,
+        "translation": 1624.5495826005936
+      },
+      "predicted": null,
+      "qtype": "attribute",
+      "question": "What color is the cylinder above the cube?"
+    },
+    {
+      "case_id": "M4",
+      "correct": false,
+      "error": null,
+      "expected": "rubber",
+      "extras": {
+        "attempts": 1,
+        "parsed_type": "attribute",
+        "query": "object(X, cylinder), attribute(X, material, M)",
+        "verbalized": "The small object is metal.",
+        "vision_latency_ms": 0.0
+      },
+      "failure_stage": "correctness",
+      "latency_ms_by_stage": {
+        "execution": 1.2104157358407974,
+        "kb_generation": 0.06154226139187813,
+        "kb_validation": 11.069083120673895,
+        "translation": 1160.7167501933873,
+        "verbalization": 0.03425031900405884
+      },
+      "predicted": "metal",
+      "qtype": "attribute",
+      "question": "What material is the small object?"
+    },
+    {
+      "case_id": "M5",
+      "correct": false,
+      "error": null,
+      "expected": 2,
+      "extras": {
+        "attempts": 1,
+        "parsed_type": "count",
+        "query": "object(X, chair), attribute(X, material, metal), findall(Y, (relation(Y, next_to, X), object(Z, chair)), L), length(L, N)",
+        "verbalized": "There are no metal chairs.",
+        "vision_latency_ms": 0.0
+      },
+      "failure_stage": "correctness",
+      "latency_ms_by_stage": {
+        "execution": 1.234500203281641,
+        "kb_generation": 0.06054108962416649,
+        "kb_validation": 9.75025026127696,
+        "translation": 3772.9193340055645,
+        "verbalization": 0.04237517714500427
+      },
+      "predicted": 0,
+      "qtype": "count",
+      "question": "How many metal chairs are there?"
+    },
+    {
+      "case_id": "M6",
+      "correct": true,
+      "error": null,
+      "expected": "white",
+      "extras": {
+        "attempts": 1,
+        "parsed_type": "attribute",
+        "query": "object(Y, cup), attribute(Y, color, C), object(X, cup), attribute(X, color, C)",
+        "verbalized": "The cup is white.",
+        "vision_latency_ms": 0.0
+      },
+      "failure_stage": null,
+      "latency_ms_by_stage": {
+        "execution": 1.1809580028057098,
+        "kb_generation": 0.04633283242583275,
+        "kb_validation": 10.57766703888774,
+        "translation": 3198.690833989531,
+        "verbalization": 0.03462517634034157
+      },
+      "predicted": "white",
+      "qtype": "attribute",
+      "question": "What color is the cup?"
+    }
+  ],
+  "summary": {
+    "accuracy": 0.5333333333333333,
+    "by_qtype": {
+      "attribute": {
+        "accuracy": 0.5,
+        "correct": 3,
+        "n": 6
+      },
+      "count": {
+        "accuracy": 0.3333333333333333,
+        "correct": 2,
+        "n": 6
+      },
+      "existence": {
+        "accuracy": 0.8333333333333334,
+        "correct": 5,
+        "n": 6
+      },
+      "multi_hop": {
+        "accuracy": 0.5,
+        "correct": 3,
+        "n": 6
+      },
+      "spatial": {
+        "accuracy": 0.5,
+        "correct": 3,
+        "n": 6
+      }
+    },
+    "correct": 16,
+    "failure_stage_counts": {
+      "correctness": 6,
+      "translation": 8
+    },
+    "mean_latency_ms_by_stage": {
+      "execution": 1.7229752953756938,
+      "kb_generation": 0.08188467472791672,
+      "kb_validation": 13.233380516370138,
+      "translation": 2715.730111145725,
+      "verbalization": 0.03319510936059735
+    },
+    "n": 30
+  }
+}
