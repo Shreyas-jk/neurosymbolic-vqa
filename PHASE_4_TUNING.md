@@ -208,7 +208,7 @@ after Phase 4.1) — that recall doesn't change with score threshold or NMS IoU.
 It's a model-prior problem: OWL-ViT trained on natural photos doesn't activate
 strongly on CLEVR-rendered chrome spheres regardless of the score floor.
 
-## What I did NOT try (deferred to Phase 5)
+## What I did NOT try in 4.2 (deferred — option 1 attempted in 4.3 below, option 2 still open)
 
 The user's task brief flagged prompt expansion as a "Note: also consider"
 option. I did NOT include it in the grid because the three threshold configs
@@ -220,12 +220,14 @@ attention:
    of a {c}"` to a CLEVR-domain template like `"a 3D rendered {c}"` or
    `"a Blender render of a {c}"`, mirroring what the CLIP attribute classifier
    does. This is one line of code; high upside if it shifts the OWL-ViT
-   text-encoder prior into render space.
+   text-encoder prior into render space. **→ Tried in Phase 4.3 below;
+   both rephrasings underperformed baseline. Aborted.**
 2. **Vocabulary expansion** — add "small geometric shape", "rendered metallic
    sphere", "shiny chrome sphere" alongside the canonical vocab, with a
    post-process step mapping the expanded query labels back to the canonical
    category before constructing `SceneObject`. The extractor currently uses
    `self.object_vocab[label_idx]` directly which assumes 1:1 query→category.
+   **Still open.**
 
 ## Files touched in this phase
 
@@ -241,5 +243,114 @@ attention:
 - **No production code changed.** `scene_extractor/extractor.py`,
   `scene_extractor/config.py`, `scene_extractor/attribute_classifier.py` are
   untouched at this phase's exit.
+
+STOP. Phase 5 not started.
+
+---
+
+# Phase 4.3 — OWL-ViT detection prompt sweep
+
+**Outcome: both prompt variants underperformed baseline (46% vs 56%). Aborted.**
+
+`scene_extractor/extractor.py` was refactored briefly to make the prompt
+template tunable per-instance, then `git checkout -- scene_extractor/extractor.py`
+reverted it after the sweep. No production code change is committed in 4.3.
+The baseline `evaluation/results/clevr_baseline_v3_after_owlvit_threshold_sweep.json`
+is committed (`f95e835`) as the stable post-4.2 anchor.
+
+## Grid
+
+Both variants ran in one process so OWL-ViT + CLIP stayed cached. Per-variant
+result JSONs are in `evaluation/results/clevr_variant{1,2}.json` and
+`evaluation/results/synthetic_after_variant{1,2}.json` (all gitignored).
+
+| Variant | Detection prompt | CLEVR | Synthetic | vision ms/img | clevr wall |
+|---|---|---|---|---:|---:|
+| **baseline v3** | `"a photo of a {c}"` | **28/50 (56.0%)** | 32/32 (100%) | 1102 | — |
+| 1 | `"a 3D rendered {c}"` | 23/50 (46.0%) | 32/32 (100%) | 1185 | 231.0s |
+| 2 | `"a Blender render of a {c}"` | 23/50 (46.0%) | 31/32 (96.9%) | 1266 | 227.8s |
+
+Both variants score identically at 46% but differ on 4 cases:
+- `CLEVR_0_count_total` — v1 right, v2 wrong
+- `CLEVR_0_count_rubber` — v1 right, v2 wrong
+- `CLEVR_5_exists_yellow_sphere` — v2 right, v1 wrong
+- `CLEVR_8_count_total` — v2 right, v1 wrong
+
+So the prompt rephrasing produces meaningfully different detection outputs
+(not just noise), but neither phrasing wins overall.
+
+## Per-variant count vs boolean + top-5 failure categories
+
+### Baseline v3 — 28/50
+- count: 15/30 (50%)  |  boolean: 13/20 (65%)
+- top failures: 6× count_material(metal), 4× count_material(rubber), 3× exists_blue_cube, 2× count_total, 2× exists_brown_cube
+
+### Variant 1: `"a 3D rendered {c}"` — 23/50, −5 vs baseline
+- count: 12/30 (40%)  |  boolean: 11/20 (55%)
+- top failures: 6× count_material(metal), 4× count_total, 3× exists_blue_cube, 3× count_material(rubber), **2× count_color(gray)**
+- vs baseline: gained 3 (CLEVR_0_count_rubber, CLEVR_0_count_total, CLEVR_5_count_total), lost 8 (CLEVR_0_exists_gray_cube, CLEVR_1_count_total, CLEVR_3_count_brown, CLEVR_3_count_total, CLEVR_5_exists_yellow_sphere, CLEVR_8_count_total, CLEVR_9_count_gray, CLEVR_9_count_total)
+- Net: −5
+
+### Variant 2: `"a Blender render of a {c}"` — 23/50, −5 vs baseline
+- count: 11/30 (37%)  |  boolean: 12/20 (60%)
+- top failures: 6× count_material(metal), 4× count_total, 4× count_material(rubber), 3× exists_blue_cube, 2× count_color(gray)
+- Synthetic gate: 31/32 (same qwen M4 flake as Phase 4.2's configs B and C)
+
+## Why both variants hurt
+
+The CLEVR-domain phrasings reduced OWL-ViT's overall detection volume — fewer
+boxes per scene. That helped a small number of cases where the baseline was
+over-detecting on count_total (variant 1 picked up CLEVR_0/5_count_total),
+but it strictly hurt:
+
+1. **Gray/brown color recall regressed** (CLEVR_{0,9}_count_gray and
+   CLEVR_3_count_brown all flipped from right → wrong). The CLIP attribute
+   classifier is fine — those colors are detectable once the box exists —
+   but the upstream detector now produces FEWER boxes on grayish/brown
+   objects when prompted with "3D rendered" phrasing. Best guess: OWL-ViT's
+   text encoder for "a 3D rendered cube" pattern-matches to highly-saturated
+   primary-color renders in its training set, suppressing muted-color matches.
+2. **Yellow sphere detection regressed in variant 1** (CLEVR_5_exists_yellow_sphere
+   flipped from right → wrong). Same root cause: the "rendered" qualifier
+   narrows the visual prior in unpredictable ways across color × shape combos.
+3. **Metal count is unchanged** (6× failures in baseline, 6× in both variants).
+   The CLEVR metal-sphere recall problem is unaffected by the prompt — it's
+   a deeper detector-prior gap that prompt phrasing alone can't bridge.
+
+So the "shift OWL-ViT's prior into render space" intuition from Phase 4.2's
+forward-looking notes was wrong. The text-encoder change does produce a
+different prior, but the prior trades one set of misses for another — and the
+trade is unfavorable for CLEVR's specific color/material mix.
+
+## What this rules out
+
+Neither of the two "obvious" detection-prompt rephrasings helps. Combined with
+Phase 4.2's negative result on threshold/NMS, the simple knobs on OWL-ViT
+inference are exhausted. The next things to try, in order:
+
+1. **Vocabulary expansion** (the other deferred item) — add CLEVR-specific
+   queries like "metallic sphere", "rubber cube", "rendered cone" alongside
+   the canonical vocab. The hypothesis is different from prompt rephrasing:
+   adding more query SLOTS should let the detector hit each query with a
+   different visual prior, raising recall on whichever phrasing matches a
+   given object. Needs the post-process label→category remap noted in 4.2.
+2. **Swap the detector model** — `google/owlv2-base-patch16-ensemble` is
+   already cached on disk; it's an updated OWL-ViT trained on more data and
+   often beats the base patch32 model on out-of-distribution domains.
+3. **Per-class detection thresholds** — drop the metal/sphere threshold to
+   0.05 while keeping the rest at 0.1. Targets the specific recall miss
+   without flooding count_total.
+
+## Files touched in this phase
+
+- `evaluation/results/clevr_baseline_v3_after_owlvit_threshold_sweep.json` —
+  committed as `f95e835` before the sweep.
+- `evaluation/results/clevr_variant{1,2}.json`,
+  `evaluation/results/synthetic_after_variant{1,2}.json` — written by the
+  sweep, gitignored.
+- `scene_extractor/extractor.py` — momentarily refactored to expose
+  `detection_prompt_template` as a class attribute for the sweep driver. Fully
+  reverted via `git checkout --` after the sweep finished.
+- **No production code changed.** Same state as the end of Phase 4.2.
 
 STOP. Phase 5 not started.
