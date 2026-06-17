@@ -1,0 +1,11 @@
+# Requirements for the Gradio demo. On HuggingFace Spaces, this is what gets
+# pip-installed at build time. The vision dependencies (torch, torchvision,
+# transformers, Pillow, numpy) are OMITTED here because real-image mode is
+# disabled on Spaces (free CPU tier is too slow for OWL-ViT + CLIP). The full
+# repo requirements.txt has the vision stack for local installs.
+gradio>=4.40,<5.0
+pydantic>=2.7
+pyswip>=0.3.2
+ollama>=0.3
+openai>=1.40
+rich>=13.7
