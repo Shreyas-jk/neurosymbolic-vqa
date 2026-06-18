@@ -447,10 +447,12 @@ def main() -> None:
         print("Demo will start but Run buttons will error until a backend is configured.")
 
     app = build_app()
-    # 127.0.0.1 by default for local use; export NSVQA_DEMO_HOST=0.0.0.0 to
-    # bind on all interfaces (HF Spaces sets its own bindings).
-    host = os.environ.get("NSVQA_DEMO_HOST", "127.0.0.1")
-    app.launch(server_name=host, server_port=7860, share=True, show_api=False)
+    # Bind 0.0.0.0 inside HuggingFace Spaces so the platform health check
+    # and reverse proxy can reach Gradio from outside the container. Stay on
+    # 127.0.0.1 locally to avoid exposing the dev server on all interfaces.
+    default_host = "0.0.0.0" if os.environ.get("SPACE_ID") else "127.0.0.1"
+    host = os.environ.get("NSVQA_DEMO_HOST", default_host)
+    app.launch(server_name=host, server_port=7860, show_api=False)
 
 
 if __name__ == "__main__":
