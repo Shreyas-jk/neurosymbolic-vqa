@@ -580,7 +580,7 @@ def main() -> None:
     # 127.0.0.1 locally to avoid exposing the dev server on all interfaces.
     default_host = "0.0.0.0" if os.environ.get("SPACE_ID") else "127.0.0.1"
     host = os.environ.get("NSVQA_DEMO_HOST", default_host)
-    app.launch(server_name=host, server_port=7860, show_api=False)
+    app.launch(server_name=host, server_port=7860, show_api=False, ssr_mode=False)
 
 
 if __name__ == "__main__":
