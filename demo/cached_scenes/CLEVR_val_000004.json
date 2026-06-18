@@ -1,0 +1,346 @@
+{
+  "image_path": "/Users/shreyaskiran/projects/neurosymbolic-vqa/data/clevr_test_subset/images/CLEVR_val_000004.png",
+  "objects": [
+    {
+      "id": "obj_0",
+      "category": "ball",
+      "confidence": 0.12032365053892136,
+      "bbox": {
+        "x1": 0.46901960372924806,
+        "y1": 0.26096596717834475,
+        "x2": 0.534097162882487,
+        "y2": 0.37961997985839846
+      },
+      "attributes": {
+        "color": "purple",
+        "size": "medium",
+        "material": "rubber",
+        "shape": "cylinder"
+      },
+      "attribute_confidences": {
+        "color": 0.9784868359565735,
+        "size": 0.4656026363372803,
+        "material": 0.6152206659317017,
+        "shape": 0.8339836597442627
+      }
+    },
+    {
+      "id": "obj_1",
+      "category": "cup",
+      "confidence": 0.19252325594425201,
+      "bbox": {
+        "x1": 0.03210025231043498,
+        "y1": 0.23432817459106445,
+        "x2": 0.21053686141967773,
+        "y2": 0.5294497013092041
+      },
+      "attributes": {
+        "color": "green",
+        "size": "small",
+        "material": "plastic",
+        "shape": "cylinder"
+      },
+      "attribute_confidences": {
+        "color": 0.8957335352897644,
+        "size": 0.49852076172828674,
+        "material": 0.5020973682403564,
+        "shape": 0.8098184466362
+      }
+    },
+    {
+      "id": "obj_2",
+      "category": "sphere",
+      "confidence": 0.23952236771583557,
+      "bbox": {
+        "x1": 0.6197748184204102,
+        "y1": 0.2294018268585205,
+        "x2": 0.7603405634562175,
+        "y2": 0.4381087303161621
+      },
+      "attributes": {
+        "color": "gray",
+        "size": "small",
+        "material": "metal",
+        "shape": "sphere"
+      },
+      "attribute_confidences": {
+        "color": 0.4344898760318756,
+        "size": 0.4950239062309265,
+        "material": 0.597046971321106,
+        "shape": 0.9711167216300964
+      }
+    },
+    {
+      "id": "obj_3",
+      "category": "ball",
+      "confidence": 0.20639491081237793,
+      "bbox": {
+        "x1": 0.1861678918202718,
+        "y1": 0.42595701217651366,
+        "x2": 0.25535685221354165,
+        "y2": 0.5193607330322265
+      },
+      "attributes": {
+        "color": "brown",
+        "size": "small",
+        "shape": "cone"
+      },
+      "attribute_confidences": {
+        "color": 0.4033365845680237,
+        "size": 0.42762383818626404,
+        "shape": 0.3589267134666443
+      }
+    },
+    {
+      "id": "obj_4",
+      "category": "cup",
+      "confidence": 0.19940491020679474,
+      "bbox": {
+        "x1": 0.7294679005940755,
+        "y1": 0.3250596523284912,
+        "x2": 0.9175579071044921,
+        "y2": 0.6478037357330322
+      },
+      "attributes": {
+        "color": "gray",
+        "size": "small",
+        "material": "plastic",
+        "shape": "cylinder"
+      },
+      "attribute_confidences": {
+        "color": 0.4522797465324402,
+        "size": 0.43194782733917236,
+        "material": 0.3721466362476349,
+        "shape": 0.94319748878479
+      }
+    },
+    {
+      "id": "obj_5",
+      "category": "ball",
+      "confidence": 0.3956576883792877,
+      "bbox": {
+        "x1": 0.18423555692036947,
+        "y1": 0.42842693328857423,
+        "x2": 0.37701524098714195,
+        "y2": 0.7117684364318848
+      },
+      "attributes": {
+        "color": "brown",
+        "size": "small",
+        "material": "plastic",
+        "shape": "cylinder"
+      },
+      "attribute_confidences": {
+        "color": 0.5966264009475708,
+        "size": 0.5535374283790588,
+        "material": 0.3988485038280487,
+        "shape": 0.4621833860874176
+      }
+    }
+  ],
+  "relations": [
+    {
+      "subject_id": "obj_0",
+      "predicate": "above",
+      "object_id": "obj_1",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_0",
+      "predicate": "left_of",
+      "object_id": "obj_2",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_0",
+      "predicate": "above",
+      "object_id": "obj_3",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_0",
+      "predicate": "left_of",
+      "object_id": "obj_4",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_0",
+      "predicate": "above",
+      "object_id": "obj_4",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_0",
+      "predicate": "above",
+      "object_id": "obj_5",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_1",
+      "predicate": "left_of",
+      "object_id": "obj_0",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_1",
+      "predicate": "left_of",
+      "object_id": "obj_2",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_1",
+      "predicate": "left_of",
+      "object_id": "obj_3",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_1",
+      "predicate": "above",
+      "object_id": "obj_3",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_1",
+      "predicate": "next_to",
+      "object_id": "obj_3",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_1",
+      "predicate": "left_of",
+      "object_id": "obj_4",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_1",
+      "predicate": "above",
+      "object_id": "obj_4",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_1",
+      "predicate": "left_of",
+      "object_id": "obj_5",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_1",
+      "predicate": "above",
+      "object_id": "obj_5",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_2",
+      "predicate": "above",
+      "object_id": "obj_3",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_2",
+      "predicate": "left_of",
+      "object_id": "obj_4",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_2",
+      "predicate": "above",
+      "object_id": "obj_4",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_2",
+      "predicate": "next_to",
+      "object_id": "obj_4",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_2",
+      "predicate": "above",
+      "object_id": "obj_5",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_3",
+      "predicate": "left_of",
+      "object_id": "obj_0",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_3",
+      "predicate": "left_of",
+      "object_id": "obj_2",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_3",
+      "predicate": "left_of",
+      "object_id": "obj_4",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_3",
+      "predicate": "left_of",
+      "object_id": "obj_5",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_3",
+      "predicate": "above",
+      "object_id": "obj_5",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_3",
+      "predicate": "inside",
+      "object_id": "obj_5",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_3",
+      "predicate": "next_to",
+      "object_id": "obj_5",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_4",
+      "predicate": "above",
+      "object_id": "obj_5",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_5",
+      "predicate": "left_of",
+      "object_id": "obj_0",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_5",
+      "predicate": "in_front_of",
+      "object_id": "obj_0",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_5",
+      "predicate": "left_of",
+      "object_id": "obj_2",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_5",
+      "predicate": "in_front_of",
+      "object_id": "obj_3",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_5",
+      "predicate": "left_of",
+      "object_id": "obj_4",
+      "confidence": 1.0
+    }
+  ],
+  "extraction_time_ms": 615.297042299062,
+  "model_versions": {
+    "detector": "google/owlvit-base-patch32",
+    "clip": "openai/clip-vit-base-patch32"
+  }
+}

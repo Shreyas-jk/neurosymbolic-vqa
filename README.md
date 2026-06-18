@@ -230,14 +230,21 @@ python demo/app.py
 # opens http://localhost:7860
 ```
 
-The Gradio UI has two modes — **real image** (file upload or one of three
-bundled CLEVR examples) and **synthetic scene** (pick a preset). Each run
-shows the answer, the reasoning trace, the generated KB, the translated
-Prolog query, the raw bindings, and per-stage latency.
+The Gradio UI has three modes — **cached CLEVR examples** (5 real CLEVR
+images with pre-computed scene graphs from the local vision pipeline; the
+📦 badge flags pre-computed perception), **synthetic scene** (hand-built
+scene graphs over the preset library), and **real image** (full live OWL-ViT
++ CLIP inference on uploaded images; local only). Each run shows the answer,
+the reasoning trace, the generated KB, the translated Prolog query, the raw
+bindings, and per-stage latency.
+
+The cached mode is an honest compromise for the Spaces free CPU tier: live
+vision inference takes 30–60 s per image there, too slow to ship. Caching
+perception lets the hosted demo still show real CLEVR images while running
+KB generation, Prolog translation, execution, and verbalization live. The
+full pipeline runs end-to-end on any local clone via `requirements-full.txt`.
 
 For a hosted version, see [docs/DEPLOY_SPACES.md](docs/DEPLOY_SPACES.md).
-The Spaces deployment runs synthetic-only mode (vision pipeline is too heavy
-for the Spaces free CPU tier).
 
 ## Architecture deep dive
 

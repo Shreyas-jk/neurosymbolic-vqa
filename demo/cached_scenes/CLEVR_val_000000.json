@@ -1,0 +1,449 @@
+{
+  "image_path": "/Users/shreyaskiran/projects/neurosymbolic-vqa/data/clevr_test_subset/images/CLEVR_val_000000.png",
+  "objects": [
+    {
+      "id": "obj_0",
+      "category": "sphere",
+      "confidence": 0.10897931456565857,
+      "bbox": {
+        "x1": 0.5313758214314779,
+        "y1": 0.21584339141845704,
+        "x2": 0.6479930241902669,
+        "y2": 0.3483603477478027
+      },
+      "attributes": {
+        "color": "purple",
+        "size": "small",
+        "material": "rubber",
+        "shape": "sphere"
+      },
+      "attribute_confidences": {
+        "color": 0.9695800542831421,
+        "size": 0.482105016708374,
+        "material": 0.41612884402275085,
+        "shape": 0.48843252658843994
+      }
+    },
+    {
+      "id": "obj_1",
+      "category": "box",
+      "confidence": 0.15612536668777466,
+      "bbox": {
+        "x1": 0.3125815709431966,
+        "y1": 0.30585076808929446,
+        "x2": 0.36919501622517903,
+        "y2": 0.42547879219055174
+      },
+      "attributes": {
+        "color": "green",
+        "size": "small",
+        "material": "rubber",
+        "shape": "cylinder"
+      },
+      "attribute_confidences": {
+        "color": 0.8871812224388123,
+        "size": 0.43096357583999634,
+        "material": 0.43647801876068115,
+        "shape": 0.5464583039283752
+      }
+    },
+    {
+      "id": "obj_2",
+      "category": "ball",
+      "confidence": 0.4234592318534851,
+      "bbox": {
+        "x1": 0.5230894724527995,
+        "y1": 0.21846163272857666,
+        "x2": 0.6506156285603841,
+        "y2": 0.4064436912536621
+      },
+      "attributes": {
+        "color": "purple",
+        "size": "small",
+        "material": "plastic",
+        "shape": "sphere"
+      },
+      "attribute_confidences": {
+        "color": 0.9936994314193726,
+        "size": 0.5946764349937439,
+        "material": 0.37035638093948364,
+        "shape": 0.8916186094284058
+      }
+    },
+    {
+      "id": "obj_3",
+      "category": "box",
+      "confidence": 0.2985624074935913,
+      "bbox": {
+        "x1": 0.16313899358113607,
+        "y1": 0.2655779361724854,
+        "x2": 0.3298383076985677,
+        "y2": 0.553922176361084
+      },
+      "attributes": {
+        "size": "small",
+        "material": "rubber",
+        "shape": "cylinder"
+      },
+      "attribute_confidences": {
+        "size": 0.5599401593208313,
+        "material": 0.3978111147880554,
+        "shape": 0.7564646005630493
+      }
+    },
+    {
+      "id": "obj_4",
+      "category": "box",
+      "confidence": 0.13463200628757477,
+      "bbox": {
+        "x1": 0.6523937225341797,
+        "y1": 0.523786973953247,
+        "x2": 0.7570232391357422,
+        "y2": 0.6110036849975586
+      },
+      "attributes": {
+        "color": "black",
+        "size": "small"
+      },
+      "attribute_confidences": {
+        "color": 0.45126891136169434,
+        "size": 0.4595305025577545
+      }
+    },
+    {
+      "id": "obj_5",
+      "category": "box",
+      "confidence": 0.5087770819664001,
+      "bbox": {
+        "x1": 0.6327237447102865,
+        "y1": 0.5211827278137207,
+        "x2": 0.7608618418375651,
+        "y2": 0.7022538661956788
+      },
+      "attributes": {
+        "color": "black",
+        "size": "small",
+        "material": "plastic",
+        "shape": "cube"
+      },
+      "attribute_confidences": {
+        "color": 0.41993507742881775,
+        "size": 0.5384102463722229,
+        "material": 0.44394418597221375,
+        "shape": 0.8527300953865051
+      }
+    },
+    {
+      "id": "obj_6",
+      "category": "cube",
+      "confidence": 0.40496811270713806,
+      "bbox": {
+        "x1": 0.285211976369222,
+        "y1": 0.40438218116760255,
+        "x2": 0.5344584147135417,
+        "y2": 0.7975645542144776
+      },
+      "attributes": {
+        "color": "gray",
+        "size": "small",
+        "material": "rubber",
+        "shape": "cube"
+      },
+      "attribute_confidences": {
+        "color": 0.40338388085365295,
+        "size": 0.5922380685806274,
+        "material": 0.43799397349357605,
+        "shape": 0.9118790626525879
+      }
+    }
+  ],
+  "relations": [
+    {
+      "subject_id": "obj_0",
+      "predicate": "above",
+      "object_id": "obj_1",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_0",
+      "predicate": "inside",
+      "object_id": "obj_2",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_0",
+      "predicate": "next_to",
+      "object_id": "obj_2",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_0",
+      "predicate": "above",
+      "object_id": "obj_3",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_0",
+      "predicate": "left_of",
+      "object_id": "obj_4",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_0",
+      "predicate": "above",
+      "object_id": "obj_4",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_0",
+      "predicate": "left_of",
+      "object_id": "obj_5",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_0",
+      "predicate": "above",
+      "object_id": "obj_5",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_0",
+      "predicate": "above",
+      "object_id": "obj_6",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_1",
+      "predicate": "left_of",
+      "object_id": "obj_0",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_1",
+      "predicate": "left_of",
+      "object_id": "obj_2",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_1",
+      "predicate": "next_to",
+      "object_id": "obj_3",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_1",
+      "predicate": "left_of",
+      "object_id": "obj_4",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_1",
+      "predicate": "above",
+      "object_id": "obj_4",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_1",
+      "predicate": "left_of",
+      "object_id": "obj_5",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_1",
+      "predicate": "above",
+      "object_id": "obj_5",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_1",
+      "predicate": "left_of",
+      "object_id": "obj_6",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_1",
+      "predicate": "above",
+      "object_id": "obj_6",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_1",
+      "predicate": "on_top_of",
+      "object_id": "obj_6",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_2",
+      "predicate": "above",
+      "object_id": "obj_1",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_2",
+      "predicate": "above",
+      "object_id": "obj_3",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_2",
+      "predicate": "left_of",
+      "object_id": "obj_4",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_2",
+      "predicate": "above",
+      "object_id": "obj_4",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_2",
+      "predicate": "left_of",
+      "object_id": "obj_5",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_2",
+      "predicate": "above",
+      "object_id": "obj_5",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_2",
+      "predicate": "above",
+      "object_id": "obj_6",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_3",
+      "predicate": "left_of",
+      "object_id": "obj_0",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_3",
+      "predicate": "left_of",
+      "object_id": "obj_1",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_3",
+      "predicate": "in_front_of",
+      "object_id": "obj_1",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_3",
+      "predicate": "left_of",
+      "object_id": "obj_2",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_3",
+      "predicate": "left_of",
+      "object_id": "obj_4",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_3",
+      "predicate": "above",
+      "object_id": "obj_4",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_3",
+      "predicate": "in_front_of",
+      "object_id": "obj_4",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_3",
+      "predicate": "left_of",
+      "object_id": "obj_5",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_3",
+      "predicate": "above",
+      "object_id": "obj_5",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_3",
+      "predicate": "in_front_of",
+      "object_id": "obj_5",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_3",
+      "predicate": "left_of",
+      "object_id": "obj_6",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_3",
+      "predicate": "above",
+      "object_id": "obj_6",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_3",
+      "predicate": "next_to",
+      "object_id": "obj_6",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_4",
+      "predicate": "inside",
+      "object_id": "obj_5",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_4",
+      "predicate": "next_to",
+      "object_id": "obj_5",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_5",
+      "predicate": "in_front_of",
+      "object_id": "obj_1",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_5",
+      "predicate": "in_front_of",
+      "object_id": "obj_4",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_6",
+      "predicate": "left_of",
+      "object_id": "obj_0",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_6",
+      "predicate": "left_of",
+      "object_id": "obj_2",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_6",
+      "predicate": "left_of",
+      "object_id": "obj_4",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_6",
+      "predicate": "left_of",
+      "object_id": "obj_5",
+      "confidence": 1.0
+    }
+  ],
+  "extraction_time_ms": 6725.53424956277,
+  "model_versions": {
+    "detector": "google/owlvit-base-patch32",
+    "clip": "openai/clip-vit-base-patch32"
+  }
+}

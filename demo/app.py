@@ -76,6 +76,28 @@ CLEVR_EXAMPLES: list[str] = [
     str(CLEVR_IMAGES_DIR / "CLEVR_val_000007.png"),
 ]
 
+# Cached CLEVR scene graphs precomputed by scripts/precompute_clevr_scenes.py.
+# Available on both local AND Spaces — the vision pipeline ran offline before
+# deploy; only the symbolic reasoning stages run live.
+CACHED_CLEVR_DIR = Path(__file__).resolve().parent / "cached_scenes"
+CACHED_CLEVR_NAMES: tuple[str, ...] = (
+    "CLEVR_val_000000",
+    "CLEVR_val_000001",
+    "CLEVR_val_000002",
+    "CLEVR_val_000003",
+    "CLEVR_val_000004",
+)
+# Original vision extraction wall time on the user's M4, recorded during the
+# precompute run — surfaced in the latency table so reviewers can see what
+# was traded for the cache hit.
+CACHED_VISION_WALL_MS: dict[str, float] = {
+    "CLEVR_val_000000": 6700.0,
+    "CLEVR_val_000001": 1200.0,
+    "CLEVR_val_000002": 800.0,
+    "CLEVR_val_000003": 700.0,
+    "CLEVR_val_000004": 600.0,
+}
+
 
 # ----- Backend + pipeline construction (lazy, cached) ---------------------
 
@@ -114,6 +136,18 @@ def _scene_from_image(image_path: str) -> SceneGraph:
     from scene_extractor.extractor import SceneExtractor
 
     return SceneExtractor().extract(image_path)
+
+
+def _scene_from_cached(name: str) -> SceneGraph:
+    """Load a precomputed SceneGraph JSON. Vision ran offline before deploy."""
+    path = CACHED_CLEVR_DIR / f"{name}.json"
+    return SceneGraph.model_validate_json(path.read_text())
+
+
+def _cached_clevr_png(name: str) -> Optional[str]:
+    """Return the PNG path for a cached CLEVR name, or None if missing."""
+    p = CACHED_CLEVR_DIR / f"{name}.png"
+    return str(p) if p.exists() else None
 
 
 # ----- Per-stage runner — same shape used by the eval harness -------------
@@ -214,9 +248,25 @@ def _scene_to_jsonable(scene: SceneGraph) -> dict[str, Any]:
     }
 
 
-def _latency_table(latency: dict[str, float], vision_ms: Optional[float]) -> list[list[Any]]:
+def _latency_table(
+    latency: dict[str, float],
+    vision_ms: Optional[float],
+    cached_original_vision_ms: Optional[float] = None,
+) -> list[list[Any]]:
     rows = []
-    if vision_ms is not None:
+    if cached_original_vision_ms is not None:
+        # Cached-mode: vision_ms is the JSON-load time; show that plus the
+        # original M4 wall time recorded at precompute, so reviewers can see
+        # what the cache traded for.
+        rows.append([
+            "vision (cached load)",
+            f"{vision_ms:.1f}" if vision_ms is not None else "—",
+        ])
+        rows.append([
+            "  ↪ original vision wall (M4)",
+            f"{cached_original_vision_ms:.0f}",
+        ])
+    elif vision_ms is not None:
         rows.append(["vision", f"{vision_ms:.1f}"])
     for k in ("kb_generation_ms", "kb_validation_ms", "translation_ms", "execution_ms", "verbalization_ms"):
         if k in latency:
@@ -262,9 +312,42 @@ def run_real_image(image_path: str | None, question: str) -> tuple:
     return _format_outputs(result, vision_ms=vision_ms)
 
 
-def _format_outputs(result: dict[str, Any], *, vision_ms: Optional[float]) -> tuple:
+def run_cached_clevr(cached_name: str, question: str) -> tuple:
+    if not cached_name:
+        return _empty_outputs("Select a cached CLEVR example first.")
+    if not question.strip():
+        return _empty_outputs("Enter a question first.")
+    t0 = time.perf_counter()
+    try:
+        scene = _scene_from_cached(cached_name)
+    except FileNotFoundError:
+        return _empty_outputs(
+            f"Cached scene graph missing for {cached_name!r}. "
+            "Run scripts/precompute_clevr_scenes.py to regenerate."
+        )
+    except Exception as exc:
+        return _empty_outputs(f"Failed to load cached scene: {exc}")
+    load_ms = (time.perf_counter() - t0) * 1000
+    result = _run_pipeline(scene, question.strip())
+    # Surface BOTH the cached-load time AND the original vision wall time so
+    # reviewers can see what was traded. The original wall time is recorded
+    # at precompute time, not measured at runtime.
+    original_ms = CACHED_VISION_WALL_MS.get(cached_name)
+    return _format_outputs(
+        result, vision_ms=load_ms, cached_original_vision_ms=original_ms
+    )
+
+
+def _format_outputs(
+    result: dict[str, Any],
+    *,
+    vision_ms: Optional[float],
+    cached_original_vision_ms: Optional[float] = None,
+) -> tuple:
     scene_json = _scene_to_jsonable(result["scene"])
-    latency_rows = _latency_table(result["latency"], vision_ms)
+    latency_rows = _latency_table(
+        result["latency"], vision_ms, cached_original_vision_ms
+    )
 
     if not result["ok"]:
         answer = f"[{result['stage']}] {result['error']}"
@@ -320,17 +403,53 @@ def build_app() -> gr.Blocks:
     with gr.Blocks(title=title, theme=gr.themes.Soft()) as app:
         gr.Markdown(f"# {title}")
         gr.Markdown(subtitle)
-        if IS_SPACES:
-            gr.Markdown(
-                "*Running on HuggingFace Spaces — real-image mode is disabled "
-                "(vision models are too heavy for the free CPU tier). Use the "
-                "Synthetic Scene tab.*"
+        gr.Markdown(
+            "### Three input modes\n"
+            "- **Synthetic scene** — hand-built scene graphs that stress-test "
+            "the symbolic stack. 100% on the 32-question golden dataset.\n"
+            "- **Cached CLEVR examples** — real CLEVR images with pre-computed "
+            "scene graphs (vision pipeline ran locally before deploy; "
+            "reasoning runs live). 📦 badge marks pre-computed perception.\n"
+            + (
+                "- *Real image upload is hidden on HuggingFace Spaces (vision "
+                "models too heavy for the free CPU tier). Clone locally to "
+                "enable it.*"
+                if IS_SPACES
+                else "- **Real image** — full live OWL-ViT + CLIP inference on "
+                "an uploaded image (requires `requirements-full.txt`)."
             )
+        )
 
         with gr.Row():
             # ----- Left: inputs -----
             with gr.Column(scale=1):
                 with gr.Tabs() as input_tabs:
+                    with gr.Tab("Cached CLEVR examples"):
+                        gr.Markdown(
+                            "**📦 Pre-computed scene graph** — the vision "
+                            "pipeline (OWL-ViT + CLIP) ran offline on the "
+                            "developer's M4 before deploy. Only KB generation, "
+                            "NL → Prolog translation, query execution, and "
+                            "verbalization run live."
+                        )
+                        cached_dropdown = gr.Dropdown(
+                            label="Cached CLEVR scene",
+                            choices=list(CACHED_CLEVR_NAMES),
+                            value=CACHED_CLEVR_NAMES[0],
+                        )
+                        cached_image_preview = gr.Image(
+                            label="Source image",
+                            value=_cached_clevr_png(CACHED_CLEVR_NAMES[0]),
+                            type="filepath",
+                            height=240,
+                            interactive=False,
+                        )
+                        cached_dropdown.change(
+                            fn=_cached_clevr_png,
+                            inputs=[cached_dropdown],
+                            outputs=[cached_image_preview],
+                        )
+
                     if not IS_SPACES:
                         with gr.Tab("Real image"):
                             real_image = gr.Image(
@@ -371,12 +490,12 @@ def build_app() -> gr.Blocks:
                     label="Example questions",
                 )
 
+                run_cached_btn = gr.Button(
+                    "Run (cached CLEVR)", variant="primary"
+                )
                 if not IS_SPACES:
                     run_real_btn = gr.Button("Run (real image)", variant="primary")
-                run_synth_btn = gr.Button(
-                    "Run (synthetic)" if not IS_SPACES else "Run",
-                    variant="primary",
-                )
+                run_synth_btn = gr.Button("Run (synthetic)", variant="primary")
 
             # ----- Right: outputs -----
             with gr.Column(scale=1):
@@ -415,6 +534,15 @@ def build_app() -> gr.Blocks:
             )
 
         # ----- Event wiring -----
+        run_cached_btn.click(
+            fn=run_cached_clevr,
+            inputs=[cached_dropdown, question],
+            outputs=[
+                answer_box, trace_box, scene_json, kb_code,
+                query_code, bindings_code, latency_table,
+            ],
+        )
+
         run_synth_btn.click(
             fn=run_synthetic,
             inputs=[preset_dropdown, question],
