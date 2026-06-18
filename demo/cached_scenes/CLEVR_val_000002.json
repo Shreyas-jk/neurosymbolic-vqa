@@ -1,0 +1,572 @@
+{
+  "image_path": "/Users/shreyaskiran/projects/neurosymbolic-vqa/data/clevr_test_subset/images/CLEVR_val_000002.png",
+  "objects": [
+    {
+      "id": "obj_0",
+      "category": "sphere",
+      "confidence": 0.15930308401584625,
+      "bbox": {
+        "x1": 0.4084368387858073,
+        "y1": 0.19079165458679198,
+        "x2": 0.5210917472839356,
+        "y2": 0.3588726043701172
+      },
+      "attributes": {
+        "color": "yellow",
+        "size": "small",
+        "material": "metal",
+        "shape": "sphere"
+      },
+      "attribute_confidences": {
+        "color": 0.8040209412574768,
+        "size": 0.6815172433853149,
+        "material": 0.35623496770858765,
+        "shape": 0.7057003974914551
+      }
+    },
+    {
+      "id": "obj_1",
+      "category": "box",
+      "confidence": 0.2162303775548935,
+      "bbox": {
+        "x1": 0.3123772939046224,
+        "y1": 0.29138410091400146,
+        "x2": 0.3766368230183919,
+        "y2": 0.4011401176452637
+      },
+      "attributes": {
+        "color": "brown",
+        "size": "small",
+        "shape": "cylinder"
+      },
+      "attribute_confidences": {
+        "color": 0.7020490765571594,
+        "size": 0.5041670203208923,
+        "shape": 0.9035701751708984
+      }
+    },
+    {
+      "id": "obj_2",
+      "category": "box",
+      "confidence": 0.22371403872966766,
+      "bbox": {
+        "x1": 0.6550121943155924,
+        "y1": 0.2330195665359497,
+        "x2": 0.8012388229370118,
+        "y2": 0.4871559143066406
+      },
+      "attributes": {
+        "color": "purple",
+        "size": "small",
+        "material": "metal",
+        "shape": "cube"
+      },
+      "attribute_confidences": {
+        "color": 0.9835283756256104,
+        "size": 0.4187166094779968,
+        "material": 0.394266277551651,
+        "shape": 0.6804009079933167
+      }
+    },
+    {
+      "id": "obj_3",
+      "category": "box",
+      "confidence": 0.3151730000972748,
+      "bbox": {
+        "x1": 0.09303008715311686,
+        "y1": 0.3893011808395386,
+        "x2": 0.18496336936950683,
+        "y2": 0.5243649482727051
+      },
+      "attributes": {
+        "color": "blue",
+        "size": "small",
+        "material": "plastic",
+        "shape": "cube"
+      },
+      "attribute_confidences": {
+        "color": 0.7368336319923401,
+        "size": 0.4903164803981781,
+        "material": 0.5924767255783081,
+        "shape": 0.7699915766716003
+      }
+    },
+    {
+      "id": "obj_4",
+      "category": "ball",
+      "confidence": 0.15599480271339417,
+      "bbox": {
+        "x1": 0.5342569351196289,
+        "y1": 0.5274886608123779,
+        "x2": 0.6014956156412761,
+        "y2": 0.6014113903045655
+      },
+      "attributes": {
+        "color": "green",
+        "size": "small",
+        "material": "plastic",
+        "shape": "cylinder"
+      },
+      "attribute_confidences": {
+        "color": 0.9565666317939758,
+        "size": 0.5960826873779297,
+        "material": 0.4442061185836792,
+        "shape": 0.5719941258430481
+      }
+    },
+    {
+      "id": "obj_5",
+      "category": "cup",
+      "confidence": 0.21834729611873627,
+      "bbox": {
+        "x1": 0.7585696538289388,
+        "y1": 0.33319199085235596,
+        "x2": 0.9277731577555338,
+        "y2": 0.6371624946594239
+      },
+      "attributes": {
+        "color": "purple",
+        "size": "small",
+        "material": "plastic",
+        "shape": "cylinder"
+      },
+      "attribute_confidences": {
+        "color": 0.9927924871444702,
+        "size": 0.3577744662761688,
+        "material": 0.4292348027229309,
+        "shape": 0.7671297192573547
+      }
+    },
+    {
+      "id": "obj_6",
+      "category": "box",
+      "confidence": 0.34332332015037537,
+      "bbox": {
+        "x1": 0.2805572191874186,
+        "y1": 0.3972515106201172,
+        "x2": 0.4710584322611491,
+        "y2": 0.7508010864257812
+      },
+      "attributes": {
+        "color": "yellow",
+        "size": "small",
+        "material": "rubber",
+        "shape": "cone"
+      },
+      "attribute_confidences": {
+        "color": 0.5377659797668457,
+        "size": 0.44515904784202576,
+        "material": 0.6013507843017578,
+        "shape": 0.42402002215385437
+      }
+    },
+    {
+      "id": "obj_7",
+      "category": "cylinder",
+      "confidence": 0.2589694857597351,
+      "bbox": {
+        "x1": 0.39936869939168296,
+        "y1": 0.5429130077362061,
+        "x2": 0.5984884262084961,
+        "y2": 0.9318130493164063
+      },
+      "attributes": {
+        "color": "white",
+        "size": "small",
+        "material": "rubber",
+        "shape": "cylinder"
+      },
+      "attribute_confidences": {
+        "color": 0.6360422968864441,
+        "size": 0.4646070599555969,
+        "material": 0.445888876914978,
+        "shape": 0.9416992664337158
+      }
+    }
+  ],
+  "relations": [
+    {
+      "subject_id": "obj_0",
+      "predicate": "above",
+      "object_id": "obj_1",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_0",
+      "predicate": "next_to",
+      "object_id": "obj_1",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_0",
+      "predicate": "left_of",
+      "object_id": "obj_2",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_0",
+      "predicate": "above",
+      "object_id": "obj_2",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_0",
+      "predicate": "above",
+      "object_id": "obj_3",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_0",
+      "predicate": "left_of",
+      "object_id": "obj_4",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_0",
+      "predicate": "above",
+      "object_id": "obj_4",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_0",
+      "predicate": "left_of",
+      "object_id": "obj_5",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_0",
+      "predicate": "above",
+      "object_id": "obj_5",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_0",
+      "predicate": "above",
+      "object_id": "obj_6",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_0",
+      "predicate": "on_top_of",
+      "object_id": "obj_6",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_0",
+      "predicate": "above",
+      "object_id": "obj_7",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_1",
+      "predicate": "left_of",
+      "object_id": "obj_0",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_1",
+      "predicate": "left_of",
+      "object_id": "obj_2",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_1",
+      "predicate": "above",
+      "object_id": "obj_3",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_1",
+      "predicate": "left_of",
+      "object_id": "obj_4",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_1",
+      "predicate": "above",
+      "object_id": "obj_4",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_1",
+      "predicate": "left_of",
+      "object_id": "obj_5",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_1",
+      "predicate": "above",
+      "object_id": "obj_5",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_1",
+      "predicate": "above",
+      "object_id": "obj_6",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_1",
+      "predicate": "on_top_of",
+      "object_id": "obj_6",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_1",
+      "predicate": "left_of",
+      "object_id": "obj_7",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_1",
+      "predicate": "above",
+      "object_id": "obj_7",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_2",
+      "predicate": "in_front_of",
+      "object_id": "obj_1",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_2",
+      "predicate": "above",
+      "object_id": "obj_3",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_2",
+      "predicate": "in_front_of",
+      "object_id": "obj_3",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_2",
+      "predicate": "above",
+      "object_id": "obj_4",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_2",
+      "predicate": "left_of",
+      "object_id": "obj_5",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_2",
+      "predicate": "above",
+      "object_id": "obj_5",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_2",
+      "predicate": "next_to",
+      "object_id": "obj_5",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_2",
+      "predicate": "above",
+      "object_id": "obj_6",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_2",
+      "predicate": "above",
+      "object_id": "obj_7",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_3",
+      "predicate": "left_of",
+      "object_id": "obj_0",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_3",
+      "predicate": "left_of",
+      "object_id": "obj_1",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_3",
+      "predicate": "in_front_of",
+      "object_id": "obj_1",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_3",
+      "predicate": "left_of",
+      "object_id": "obj_2",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_3",
+      "predicate": "left_of",
+      "object_id": "obj_4",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_3",
+      "predicate": "above",
+      "object_id": "obj_4",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_3",
+      "predicate": "left_of",
+      "object_id": "obj_5",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_3",
+      "predicate": "left_of",
+      "object_id": "obj_6",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_3",
+      "predicate": "above",
+      "object_id": "obj_6",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_3",
+      "predicate": "left_of",
+      "object_id": "obj_7",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_3",
+      "predicate": "above",
+      "object_id": "obj_7",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_4",
+      "predicate": "left_of",
+      "object_id": "obj_2",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_4",
+      "predicate": "left_of",
+      "object_id": "obj_5",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_4",
+      "predicate": "above",
+      "object_id": "obj_7",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_4",
+      "predicate": "next_to",
+      "object_id": "obj_7",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_5",
+      "predicate": "above",
+      "object_id": "obj_4",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_5",
+      "predicate": "above",
+      "object_id": "obj_6",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_5",
+      "predicate": "above",
+      "object_id": "obj_7",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_6",
+      "predicate": "left_of",
+      "object_id": "obj_0",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_6",
+      "predicate": "in_front_of",
+      "object_id": "obj_1",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_6",
+      "predicate": "left_of",
+      "object_id": "obj_2",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_6",
+      "predicate": "in_front_of",
+      "object_id": "obj_2",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_6",
+      "predicate": "in_front_of",
+      "object_id": "obj_3",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_6",
+      "predicate": "left_of",
+      "object_id": "obj_4",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_6",
+      "predicate": "left_of",
+      "object_id": "obj_5",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_6",
+      "predicate": "left_of",
+      "object_id": "obj_7",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_6",
+      "predicate": "above",
+      "object_id": "obj_7",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_6",
+      "predicate": "next_to",
+      "object_id": "obj_7",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_7",
+      "predicate": "left_of",
+      "object_id": "obj_2",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_7",
+      "predicate": "left_of",
+      "object_id": "obj_4",
+      "confidence": 1.0
+    },
+    {
+      "subject_id": "obj_7",
+      "predicate": "left_of",
+      "object_id": "obj_5",
+      "confidence": 1.0
+    }
+  ],
+  "extraction_time_ms": 765.2826248668134,
+  "model_versions": {
+    "detector": "google/owlvit-base-patch32",
+    "clip": "openai/clip-vit-base-patch32"
+  }
+}
