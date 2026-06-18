@@ -16,9 +16,7 @@ logic over CLIP / OWL-ViT scene graphs. Perception runs on local vision models;
 reasoning runs on SWI-Prolog; the LLM only translates English to a query that
 the symbolic stack executes.
 
-**Live demo:** see [docs/DEPLOY_SPACES.md](docs/DEPLOY_SPACES.md) for the
-one-command Spaces deployment (synthetic-only mode; the vision pipeline runs
-locally only).
+**Live demo:** [https://huggingface.co/spaces/Shreyasjk/neurosymbolic-vqa](https://huggingface.co/spaces/Shreyasjk/neurosymbolic-vqa)
 
 [![CI](https://github.com/Shreyas-jk/neurosymbolic-vqa/actions/workflows/ci.yml/badge.svg)](https://github.com/Shreyas-jk/neurosymbolic-vqa/actions/workflows/ci.yml)
 
@@ -223,28 +221,13 @@ scripts/run_eval.sh clevr       # 50-question CLEVR (needs data/, see scripts/RE
 
 ## Demo
 
-Local launch (after install):
+The [live demo on HuggingFace Spaces](https://huggingface.co/spaces/Shreyasjk/neurosymbolic-vqa) has three modes:
 
-```bash
-python demo/app.py
-# opens http://localhost:7860
-```
+- **Synthetic scene** — hand-built scene graphs that stress-test the logic pipeline (KB generation, NL→Prolog translation, deterministic Prolog reasoning, verbalized answers with full traces). No vision pipeline involved; this is where the system hits 100% on its golden dataset.
+- **Cached CLEVR examples** — real CLEVR images with scene graphs pre-computed locally via the OWL-ViT + CLIP vision pipeline. The perception layer is cached (📦 badge in the UI signals this); reasoning runs live. This is the closest a hosted demo gets to the full system without paid GPU.
+- **Real image** (local only, hidden on Spaces) — full live vision pipeline on uploaded images. Requires the local clone with the vision stack installed. CLEVR zero-shot accuracy on this path is 56%.
 
-The Gradio UI has three modes — **cached CLEVR examples** (5 real CLEVR
-images with pre-computed scene graphs from the local vision pipeline; the
-📦 badge flags pre-computed perception), **synthetic scene** (hand-built
-scene graphs over the preset library), and **real image** (full live OWL-ViT
-+ CLIP inference on uploaded images; local only). Each run shows the answer,
-the reasoning trace, the generated KB, the translated Prolog query, the raw
-bindings, and per-stage latency.
-
-The cached mode is an honest compromise for the Spaces free CPU tier: live
-vision inference takes 30–60 s per image there, too slow to ship. Caching
-perception lets the hosted demo still show real CLEVR images while running
-KB generation, Prolog translation, execution, and verbalization live. The
-full pipeline runs end-to-end on any local clone via `requirements-full.txt`.
-
-For a hosted version, see [docs/DEPLOY_SPACES.md](docs/DEPLOY_SPACES.md).
+To run the real-image mode locally, clone the repo and follow the Quick Start.
 
 ## Architecture deep dive
 
